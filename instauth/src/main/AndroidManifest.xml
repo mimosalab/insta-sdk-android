@@ -2,8 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.aravi.instapi.instauth">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application>
-        <activity android:name=".InstaAuthActivity"></activity>
+        <activity
+            android:name=".InstaAuthActivity"
+            android:noHistory="true"
+            android:theme="@style/InstaAuthTheme" />
     </application>
 
 </manifest>

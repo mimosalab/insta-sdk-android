@@ -1,22 +1,29 @@
 package me.aravi.instapi.instauth;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
+@Keep
 public class InstaUser {
     private String username;
-    @Nullable private String fullName;
+    @Nullable
+    private String fullName;
     private long userId;
-    @Nullable private String biography;
+    @Nullable
+    private String biography;
     private String profilePicUrl;
     private boolean isPrivate;
     private long loggedInAt;
-    @Nullable private String csrfToken;
+    @Nullable
+    private String csrfToken;
+
+    private String cookie;
 
     public InstaUser() {
 
     }
 
-    public InstaUser(String username, @Nullable String fullName, long userId, @Nullable String biography, String profilePicUrl, boolean isPrivate, long loggedInAt, @Nullable String csrfToken) {
+    public InstaUser(String username, @Nullable String fullName, long userId, @Nullable String biography, String profilePicUrl, boolean isPrivate, long loggedInAt, @Nullable String csrfToken, String cookie) {
         this.username = username;
         this.fullName = fullName;
         this.userId = userId;
@@ -25,6 +32,7 @@ public class InstaUser {
         this.isPrivate = isPrivate;
         this.loggedInAt = loggedInAt;
         this.csrfToken = csrfToken;
+        this.cookie = cookie;
     }
 
     public String getUsername() {
@@ -92,5 +100,13 @@ public class InstaUser {
 
     public void setCsrfToken(@Nullable String csrfToken) {
         this.csrfToken = csrfToken;
+    }
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
     }
 }

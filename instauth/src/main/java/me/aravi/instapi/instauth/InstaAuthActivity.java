@@ -94,7 +94,7 @@ public class InstaAuthActivity extends AppCompatActivity {
                     auth_pref.edit().putBoolean("private", obj.getBoolean("is_private")).apply();
                     auth_pref.edit().putString("bio", obj.getString("bio")).apply();
                     auth_pref.edit().putLong("userId", Long.parseLong(obj.getString("id"))).apply();
-//                    auth_pref.edit().putString("csrftoken", obj.getString("csrftoken") + "").apply();
+                    auth_pref.edit().putString("csrftoken", obj.getString("csrftoken") + "").apply();
                     auth_pref.edit().putLong("login_time", System.currentTimeMillis()).apply();
 
                     String cookies = CookieManager.getInstance().getCookie("https://www.instagram.com");

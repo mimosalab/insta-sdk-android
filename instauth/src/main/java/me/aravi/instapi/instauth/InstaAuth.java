@@ -42,6 +42,7 @@ public class InstaAuth {
             instaUser.setPrivate(preferences.getBoolean("private", false));
             instaUser.setProfilePicUrl(preferences.getString("dp", ""));
             instaUser.setLoggedInAt(preferences.getLong("login_time", 0));
+            instaUser.setCookie(preferences.getString("cookie", ""));
 
             return instaUser;
         } else {

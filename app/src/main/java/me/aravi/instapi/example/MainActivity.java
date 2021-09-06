@@ -12,8 +12,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import me.aravi.instapi.InstapiSDK;
 import me.aravi.instapi.instauth.InstaAuth;
 import me.aravi.instapi.instauth.InstaUser;
+import me.aravi.instapi.models.profile.ProfileDetails;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     InstaUser user = iAuth.getCurrentUser();
-                    Toast.makeText(MainActivity.this, "User :" + user.getCsrfToken(), Toast.LENGTH_SHORT).show();
+                    getProfile(user);
                 } else {
                     Toast.makeText(MainActivity.this, "Couldn't complete", Toast.LENGTH_SHORT).show();
                 }
@@ -46,7 +51,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void startAuth() {
+    private void getProfile(InstaUser user) {
+        InstapiSDK.getInstance(this).getInstaProfile(user, new Callback<ProfileDetails>() {
+            @Override
+            public void onResponse(Call<ProfileDetails> call, Response<ProfileDetails> response) {
+                ProfileDetails profileDetails = response.body();
+                if (profileDetails != null) {
+                    Toast.makeText(MainActivity.this, "You have :" + profileDetails.getGraphql().getUser().getEdgeFollowedBy().getCount().toString() + " Followers", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ProfileDetails> call, Throwable t) {
+
+            }
+        });
     }
 }

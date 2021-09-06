@@ -37,6 +37,7 @@ dependencies {
     implementation(project(":instauth"))
     implementation(project(":core"))
 
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
 
