@@ -3,21 +3,15 @@ plugins {
     id("maven-publish")
 }
 
-
-static def isReleaseBuild() {
-    return true
-}
-
-
 def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
 
 def getVersionName = { ->
-    return "1.0.0" // Replace with version Name
+    return "1.0.0"
 }
 
 def getArtificatId = { ->
-    return "core" // Replace with library name ID
+    return "instauth"
 }
 
 def getOutputDir() {
@@ -44,11 +38,15 @@ def getPublicationName() {
     }
 }
 
+static def isReleaseBuild() {
+    return true
+}
+
 publishing {
     publications {
-        "${getPublicationName()}" (MavenPublication) {
+        "${getPublicationName()}"(MavenPublication) {
             groupId "me.aravi.instasdk"
-            artifactId getArtificatId()
+            artifactId "auth"
             version getVersionName()
             artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
 
@@ -76,27 +74,21 @@ publishing {
     }
 }
 
-
-
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
-        versionName getVersionName()
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -109,12 +101,9 @@ android {
 }
 
 dependencies {
+
     implementation 'androidx.appcompat:appcompat:1.3.1'
-
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-
+    implementation 'com.google.android.material:material:1.4.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
