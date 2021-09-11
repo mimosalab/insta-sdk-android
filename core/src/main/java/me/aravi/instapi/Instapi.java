@@ -2,6 +2,9 @@ package me.aravi.instapi;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -53,7 +56,7 @@ public class Instapi {
         public Response intercept(Chain chain) throws IOException {
             Response originalResponse = chain.proceed(chain.request());
             if (NetworkUtils.isNetworkAvailable(instance.context)) {
-                int maxAge = 60 * 10;
+                int maxAge = 60 * 5;
                 return originalResponse.newBuilder()
                         .removeHeader("Cache-Control")
                         .removeHeader("Pragma")
@@ -74,7 +77,7 @@ public class Instapi {
         if (endpoints == null) {
 
             File httpCacheDirectory = new File(context.getCacheDir(), "cache_r");
-            int cacheSize = 100 * 1024 * 1024; // 100 MB
+            int cacheSize = 20 * 1024 * 1024; // 20 MB
             Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
             OkHttpClient client = new OkHttpClient.Builder()
@@ -82,11 +85,14 @@ public class Instapi {
                     .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                     .build();
 
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
             endpoints = retrofit.create(Endpoints.class);
