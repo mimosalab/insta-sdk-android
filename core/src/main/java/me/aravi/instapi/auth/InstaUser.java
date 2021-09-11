@@ -1,9 +1,8 @@
-package me.aravi.instapi.instauth;
+package me.aravi.instapi.auth;
 
 import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
-@Deprecated
 @Keep
 public class InstaUser {
     private String username;

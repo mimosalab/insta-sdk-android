@@ -1,4 +1,4 @@
-package me.aravi.instapi.instauth;
+package me.aravi.instapi.auth;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,9 +27,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-import me.aravi.instapi.instauth.databinding.ActivityInstaAuthBinding;
+import me.aravi.instapi.BuildConfig;
+import me.aravi.instapi.databinding.ActivityInstaAuthBinding;
 
-@Deprecated
+
 public class InstaAuthActivity extends AppCompatActivity {
 
     private ActivityInstaAuthBinding binding;

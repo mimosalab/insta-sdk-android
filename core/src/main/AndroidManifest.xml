@@ -5,4 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <application>
+        <activity
+            android:name=".auth.InstaAuthActivity"
+            android:noHistory="true"
+            android:theme="@style/InstaAuthTheme" />
+    </application>
 </manifest>

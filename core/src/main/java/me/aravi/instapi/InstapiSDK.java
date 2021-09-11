@@ -3,7 +3,7 @@ package me.aravi.instapi;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import me.aravi.instapi.instauth.InstaUser;
+import me.aravi.instapi.auth.InstaUser;
 import me.aravi.instapi.models.allposts.AllPosts;
 import me.aravi.instapi.models.post.PostDetails;
 import me.aravi.instapi.models.profile.ProfileDetails;

@@ -1,4 +1,4 @@
-package me.aravi.instapi.instauth;
+package me.aravi.instapi.auth;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +10,10 @@ import androidx.security.crypto.MasterKey;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
+import me.aravi.instapi.BuildConfig;
+
 import static android.content.Context.MODE_PRIVATE;
 
-@Deprecated
 public class InstaAuth {
 
     private static InstaAuth instance;
@@ -31,11 +32,6 @@ public class InstaAuth {
         this.preferences = getEncryptedPreference();
     }
 
-    /**
-     * Use core module
-     * @return
-     */
-    @Deprecated
     public InstaUser getCurrentUser() {
         if (preferences.getBoolean("status", false)) {
 
@@ -56,35 +52,17 @@ public class InstaAuth {
         }
     }
 
-
-    /**
-     * Use core module
-     * @return
-     */
-    @Deprecated
     public String getCookie() {
         return preferences.getString("cookie", null);
     }
 
 
-
-    /**
-     * Use core module
-     * @return
-     */
-    @Deprecated
     public Intent startAuth() {
         Intent intent = new Intent(context, InstaAuthActivity.class);
         return intent;
     }
 
 
-
-    /**
-     * Use core module
-     * @return
-     */
-    @Deprecated
     private SharedPreferences getEncryptedPreference() {
         try {
             MasterKey mainKey = new MasterKey.Builder(context)

@@ -13,8 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import me.aravi.instapi.InstapiSDK;
-import me.aravi.instapi.instauth.InstaAuth;
-import me.aravi.instapi.instauth.InstaUser;
+import me.aravi.instapi.auth.InstaAuth;
+import me.aravi.instapi.auth.InstaUser;
 import me.aravi.instapi.models.profile.ProfileDetails;
 import retrofit2.Call;
 import retrofit2.Callback;
