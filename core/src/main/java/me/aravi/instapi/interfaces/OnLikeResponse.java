@@ -1,4 +1,4 @@
-package me.aravi.instapi;
+package me.aravi.instapi.interfaces;
 
 public interface OnLikeResponse {
 

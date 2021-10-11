@@ -18,12 +18,13 @@ public class InstaUser {
     private String csrfToken;
 
     private String cookie;
+    private String roll_hash;
 
     public InstaUser() {
 
     }
 
-    public InstaUser(String username, @Nullable String fullName, long userId, @Nullable String biography, String profilePicUrl, boolean isPrivate, long loggedInAt, @Nullable String csrfToken, String cookie) {
+    public InstaUser(String username, @Nullable String fullName, long userId, @Nullable String biography, String profilePicUrl, boolean isPrivate, long loggedInAt, @Nullable String csrfToken, String cookie, String roll_hash) {
         this.username = username;
         this.fullName = fullName;
         this.userId = userId;
@@ -33,6 +34,7 @@ public class InstaUser {
         this.loggedInAt = loggedInAt;
         this.csrfToken = csrfToken;
         this.cookie = cookie;
+        this.roll_hash = roll_hash;
     }
 
     public String getUsername() {
@@ -108,5 +110,13 @@ public class InstaUser {
 
     public void setCookie(String cookie) {
         this.cookie = cookie;
+    }
+
+    public String getRoll_hash() {
+        return roll_hash;
+    }
+
+    public void setRoll_hash(String roll_hash) {
+        this.roll_hash = roll_hash;
     }
 }

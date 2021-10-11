@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import me.aravi.instapi.models.allposts.AllPosts;
+import me.aravi.instapi.models.followers.Followers;
 import me.aravi.instapi.models.post.PostDetails;
 import me.aravi.instapi.models.profile.ProfileDetails;
 import me.aravi.instapi.utils.NetworkUtils;
@@ -23,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -123,18 +125,18 @@ public class Instapi {
                                    @Header("user-agent") String user_agent);
 
         @GET("graphql/query/")
-        Call<JSONObject> getFollowers(@Header("Cookie") String cookie,
-                                      @Header("x-csrftoken") String csrfToken,
-                                      @Query("query_hash") String queryHash,
-                                      @Query("variables") String variables,
-                                      @Header("user-agent") String user_agent);
+        Call<Followers> getFollowers(@Header("Cookie") String cookie,
+                                     @Header("x-csrftoken") String csrfToken,
+                                     @Query("query_hash") String queryHash,
+                                     @Query("variables") String variables,
+                                     @Header("user-agent") String user_agent);
 
         @GET("graphql/query/")
-        Call<JSONObject> getFollowing(@Header("Cookie") String cookie,
-                                      @Header("x-csrftoken") String csrfToken,
-                                      @Query("query_hash") String query_hash,
-                                      @Query("variables") String variable,
-                                      @Header("user-agent") String user_agent);
+        Call<Followers> getFollowing(@Header("Cookie") String cookie,
+                                     @Header("x-csrftoken") String csrfToken,
+                                     @Query("query_hash") String query_hash,
+                                     @Query("variables") String variable,
+                                     @Header("user-agent") String user_agent);
 
         @GET("p/{post_short_code}/?__a=1")
         Call<PostDetails> getPostDetails(@Header("Cookie") String cookie,
@@ -182,6 +184,15 @@ public class Instapi {
         Call<Object> unlikePost(@Header("Cookie") String str,
                                 @Header("X-Csrftoken") String str2,
                                 @Path("post_id") long j);
+
+
+        @POST
+        @FormUrlEncoded
+        Call<Object> setPrivacy(@Header("Cookie") String cookie,
+                                @Header("User-Agent") String user,
+                                @Header("Referer") String referer,
+                                @Header("X-CSRFToken") String csrfToken,
+                                @FieldMap Map<String, String> params);
 
 
     }

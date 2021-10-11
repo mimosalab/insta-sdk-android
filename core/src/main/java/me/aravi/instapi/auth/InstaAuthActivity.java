@@ -71,22 +71,26 @@ public class InstaAuthActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            binding.webView.evaluateJavascript("" +
-                    "(function checkUsername() {\n"
-                    + "  let viewer = window._sharedData.config\n"
-                    + "  if (viewer.viewer != null){\n"
-                    + "    var obj = {\n"
-                    + "      csrftoken: viewer.csrf_token,\n"
-                    + "      username: viewer.viewer.username,\n"
-                    + "      id: viewer.viewer.id,\n"
-                    + "      full_name: viewer.viewer.full_name,\n"
-                    + "      profile_pic_url: viewer.viewer.profile_pic_url_hd,\n"
-                    + "      is_private: viewer.viewer.is_private,\n" +
-                    "      recently: viewer.viewer.is_joined_recently,\n"
-                    + "      bio: viewer.viewer.biography\n" + "    };\n"
-                    + "    return obj;\n" + "  } else {\n"
-                    + "     return null;\n" + "  }\n"
-                    + "})()", value -> {
+            binding.webView.evaluateJavascript("(function checkUsername() {\n" +
+                    "  let viewer = window._sharedData.config\n" +
+                    "  let shared = window._sharedData\n" +
+                    "  if (viewer.viewer != null){\n" +
+                    "    var obj = {\n" +
+                    "      csrftoken: viewer.csrf_token,\n" +
+                    "      username : viewer.viewer.username,\n" +
+                    "      id: viewer.viewer.id,\n" +
+                    "      full_name: viewer.viewer.full_name,\n" +
+                    "      profile_pic_url: viewer.viewer.profile_pic_url_hd,\n" +
+                    "      is_private: viewer.viewer.is_private,\n" +
+                    "      bio: viewer.viewer.biography,\n" +
+                    "      rollout_hash: shared.rollout_hash\n" +
+                    "    }\n" +
+                    "    return obj;\n" +
+                    "  }\n" +
+                    "  else {\n" +
+                    "    return null;\n" +
+                    "  }\n" +
+                    "})()", value -> {
                 try {
                     // If yes
                     JSONObject obj = new JSONObject(value);
@@ -96,7 +100,8 @@ public class InstaAuthActivity extends AppCompatActivity {
                     auth_pref.edit().putBoolean("private", obj.getBoolean("is_private")).apply();
                     auth_pref.edit().putString("bio", obj.getString("bio")).apply();
                     auth_pref.edit().putLong("userId", Long.parseLong(obj.getString("id"))).apply();
-                    auth_pref.edit().putString("csrftoken", obj.getString("csrftoken") + "").apply();
+                    auth_pref.edit().putString("csrftoken", obj.getString("csrftoken")).apply();
+                    auth_pref.edit().putString("rollout_hash", obj.getString("rollout_hash")).apply();
                     auth_pref.edit().putLong("login_time", System.currentTimeMillis()).apply();
 
                     String cookies = CookieManager.getInstance().getCookie("https://www.instagram.com");
