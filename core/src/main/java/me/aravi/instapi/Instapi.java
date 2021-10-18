@@ -111,11 +111,18 @@ public class Instapi {
                                   @Path("post_id") long postId);
 
         @POST("web/friendships/{user_id}/follow/")
-        Call<JSONObject> follow(@Header("Cookie") String cookie,
-                                @Header("X-Csrftoken") String csrfToken,
-                                @Header("X-Instagram-Ajax") String ajax,
-                                @Header("user-agent") String agent,
+        Call<Object> follow(@Header("Cookie") String cookie,
+                                @Header("X-CSRFToken") String csrfToken,
+                                @Header("X-Instagram-AJAX") String ajax,
+                                @Header("User-Agent") String agent,
                                 @Path("user_id") String userId);
+
+        @POST("web/friendships/{user_id}/unfollow/")
+        Call<Object> unFollow(@Header("Cookie") String cookie,
+                            @Header("X-CSRFToken") String csrfToken,
+                            @Header("X-Instagram-AJAX") String ajax,
+                            @Header("User-Agent") String agent,
+                            @Path("user_id") String userId);
 
         @GET("graphql/query/")
         Call<AllPosts> getAllPosts(@Header("Cookie") String cookie,
@@ -186,12 +193,13 @@ public class Instapi {
                                 @Path("post_id") long j);
 
 
-        @POST
+        @POST("accounts/set_private/")
         @FormUrlEncoded
         Call<Object> setPrivacy(@Header("Cookie") String cookie,
                                 @Header("User-Agent") String user,
                                 @Header("Referer") String referer,
                                 @Header("X-CSRFToken") String csrfToken,
+                                @Header("X-Instagram-AJAX") String rollHash,
                                 @FieldMap Map<String, String> params);
 
 

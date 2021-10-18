@@ -1,6 +1,7 @@
 package me.aravi.instapi.auth;
 
 import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 @Keep
@@ -118,5 +119,17 @@ public class InstaUser {
 
     public void setRoll_hash(String roll_hash) {
         this.roll_hash = roll_hash;
+    }
+
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Username:" + getUsername() +
+                " UserID:" + getUserId() +
+                " CSRFToken:" + getCsrfToken() +
+                " RollHash:" + getRoll_hash() +
+                " FullName:" + getFullName() +
+                " Cookie:" + getCookie();
     }
 }

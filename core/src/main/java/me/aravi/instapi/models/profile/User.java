@@ -2,6 +2,7 @@
 package me.aravi.instapi.models.profile;
 
 import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -186,4 +187,15 @@ public class User {
         this.edgeOwnerToTimelineMedia = edgeOwnerToTimelineMedia;
     }
 
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Username:" + getUsername() +
+                "Followers:" + getEdgeFollowedBy().getCount() +
+                "Following:" + getEdgeFollow().getCount() +
+                "Private:" + getIsPrivate() +
+                "Verified:" + getIsVerified() +
+                "Professional:" + getIsProfessionalAccount();
+    }
 }

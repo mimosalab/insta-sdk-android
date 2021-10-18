@@ -45,6 +45,7 @@ public class InstaAuth {
             instaUser.setProfilePicUrl(preferences.getString("dp", ""));
             instaUser.setLoggedInAt(preferences.getLong("login_time", 0));
             instaUser.setCookie(preferences.getString("cookie", ""));
+            instaUser.setRoll_hash(preferences.getString("rollout_hash", "f61afa487646"));
 
             return instaUser;
         } else {

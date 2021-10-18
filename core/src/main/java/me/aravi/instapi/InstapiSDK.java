@@ -5,8 +5,10 @@ import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import me.aravi.instapi.auth.InstaUser;
 import me.aravi.instapi.interfaces.OnFollowResponse;
@@ -162,20 +164,50 @@ public class InstapiSDK {
         });
     }
 
-    public void followWith(long userId, InstaUser user, OnFollowResponse listener) {
-        Call<JSONObject> followCall = instapi.getService().follow(user.getCookie(), user.getCsrfToken(), user.getRoll_hash(), USER_AGENT, String.valueOf(userId));
-        followCall.enqueue(new Callback<JSONObject>() {
+    public void followAccount(long userId, InstaUser user, OnFollowResponse listener) {
+        Call<Object> followCall = instapi.getService().follow(user.getCookie(),
+                user.getCsrfToken(),
+                user.getRoll_hash(),
+                USER_AGENT,
+                String.valueOf(userId));
+        followCall.enqueue(new Callback<Object>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+            public void onResponse(Call<Object> call, Response<Object> response) {
                 if (response.code() == 200) {
-                    listener.onSuccess(response.body() != null ? response.body().toString() : null);
+                    listener.onSuccess(response.body().toString());
                 } else {
                     listener.onFailure(response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<Object> call, Throwable t) {
+                listener.onFailure(t.getMessage());
+            }
+        });
+
+
+    }
+
+
+    public void unFollowAccount(long userId, InstaUser user, OnFollowResponse listener) {
+        Call<Object> followCall = instapi.getService().follow(user.getCookie(),
+                user.getCsrfToken(),
+                user.getRoll_hash(),
+                USER_AGENT,
+                String.valueOf(userId));
+        followCall.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                if (response.code() == 200) {
+                    listener.onSuccess(response.body().toString());
+                } else {
+                    listener.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
                 listener.onFailure(t.getMessage());
             }
         });
@@ -186,11 +218,13 @@ public class InstapiSDK {
     public void setAccountPrivacy(boolean is_private, InstaUser user, OnSimpleResponse listener) {
         Map<String, String> params = new HashMap<>();
         params.put("is_private", String.valueOf(is_private));
-        params.put("MIME Type", "application/x-www-form-urlencoded");
-        Call<Object> privacyCall = instapi.getService().setPrivacy(user.getCookie(),
+//        params.put("MIME Type", "application/x-www-form-urlencoded");
+        Call<Object> privacyCall = instapi.getService().setPrivacy(
+                user.getCookie(),
                 USER_AGENT,
                 "https://www.instagram.com/accounts/privacy_and_security",
                 user.getCsrfToken(),
+                user.getRoll_hash(),
                 params);
         privacyCall.enqueue(new Callback<Object>() {
             @Override
@@ -198,7 +232,11 @@ public class InstapiSDK {
                 if (response.code() == 200) {
                     listener.success(response.body() != null ? response.body().toString() : null);
                 } else {
-                    listener.failure(String.valueOf(response.code()));
+                    try {
+                        listener.failure(Objects.requireNonNull(response.errorBody()).string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
