@@ -99,20 +99,21 @@ public class InstapiSDK {
     }
 
 
-    public void getFollowersList(InstaUser instaUser, int total_followers, Callback<Followers> callback) {
+    public void getFollowersList(InstaUser instaUser, int max, Callback<Followers> callback) {
         Call<Followers> followersCall = instapi.getService().getFollowers(instaUser.getCookie(),
                 instaUser.getCsrfToken(),
                 InstaConfig.QUERY_HASH_FOLLOWERS,
-                "{id:" + instaUser.getUserId() + ", first:" + total_followers + "}",
+                "{\"id\":\"" + instaUser.getUserId() + "\",\"first\":" + max + "}",
                 USER_AGENT);
         AsyncTask.execute(() -> followersCall.enqueue(callback));
     }
 
-    public void getFollowingList(InstaUser instaUser, int total_following, Callback<Followers> callback) {
+
+    public void getFollowingList(InstaUser instaUser, int max, Callback<Followers> callback) {
         Call<Followers> following = instapi.getService().getFollowing(instaUser.getCookie(),
                 instaUser.getCsrfToken(),
                 InstaConfig.QUERY_HASH_FOLLOWING,
-                "{id:" + instaUser.getUserId() + ",first:" + total_following + "}",
+                "{\"id\":\"" + instaUser.getUserId() + "\",\"first\":" + max + "}",
                 USER_AGENT);
         AsyncTask.execute(() -> following.enqueue(callback));
     }

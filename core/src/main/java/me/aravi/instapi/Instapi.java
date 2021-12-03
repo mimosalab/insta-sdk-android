@@ -205,17 +205,17 @@ public class Instapi {
 
         @POST("/web/friendships/{user_id}/follow")
         Call<JSONObject> advancedFollow(@Header("Cookie") String cookie,
-                                    @Header("User-Agent") String user,
-                                    @Header("X-CSRFToken") String csrfToken,
-                                    @Header("X-Instagram-AJAX") String rollHash,
-                                    @Path("user_id") long userId);
+                                        @Header("User-Agent") String user,
+                                        @Header("X-CSRFToken") String csrfToken,
+                                        @Header("X-Instagram-AJAX") String rollHash,
+                                        @Path("user_id") long userId);
 
         @POST("/web/friendships/{user_id}/unfollow")
         Call<JSONObject> advancedUnFollow(@Header("Cookie") String cookie,
-                                      @Header("User-Agent") String user,
-                                      @Header("X-CSRFToken") String csrfToken,
-                                      @Header("X-Instagram-AJAX") String rollHash,
-                                      @Path("user_id") long userId);
+                                          @Header("User-Agent") String user,
+                                          @Header("X-CSRFToken") String csrfToken,
+                                          @Header("X-Instagram-AJAX") String rollHash,
+                                          @Path("user_id") long userId);
 
 
         @POST("/web/likes/{post_id}/like")

@@ -13,6 +13,10 @@ public class User {
     @Expose
     private EdgeFollow edgeFollow;
 
+    @SerializedName("edge_followed_by")
+    @Expose
+    private EdgeFollowedBy edgeFollowedBy;
+
     public EdgeFollow getEdgeFollow() {
         return edgeFollow;
     }
@@ -21,4 +25,11 @@ public class User {
         this.edgeFollow = edgeFollow;
     }
 
+    public EdgeFollowedBy getEdgeFollowedBy() {
+        return edgeFollowedBy;
+    }
+
+    public void setEdgeFollowedBy(EdgeFollowedBy edgeFollowedBy) {
+        this.edgeFollowedBy = edgeFollowedBy;
+    }
 }
