@@ -53,6 +53,12 @@ public class InstaAuthActivity extends AppCompatActivity {
         WebSettings webSettings = binding.webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setNeedInitialFocus(true);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setAllowFileAccess(false);
+        webSettings.setAppCachePath(getCacheDir().getAbsolutePath());
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             webSettings.setForceDark(WebSettings.FORCE_DARK_AUTO);
         }
@@ -71,26 +77,7 @@ public class InstaAuthActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            binding.webView.evaluateJavascript("(function checkUsername() {\n" +
-                    "  let viewer = window._sharedData.config\n" +
-                    "  let shared = window._sharedData\n" +
-                    "  if (viewer.viewer != null){\n" +
-                    "    var obj = {\n" +
-                    "      csrftoken: viewer.csrf_token,\n" +
-                    "      username : viewer.viewer.username,\n" +
-                    "      id: viewer.viewer.id,\n" +
-                    "      full_name: viewer.viewer.full_name,\n" +
-                    "      profile_pic_url: viewer.viewer.profile_pic_url_hd,\n" +
-                    "      is_private: viewer.viewer.is_private,\n" +
-                    "      bio: viewer.viewer.biography,\n" +
-                    "      rollout_hash: shared.rollout_hash\n" +
-                    "    }\n" +
-                    "    return obj;\n" +
-                    "  }\n" +
-                    "  else {\n" +
-                    "    return null;\n" +
-                    "  }\n" +
-                    "})()", value -> {
+            binding.webView.evaluateJavascript("(function(_0x35d807,_0x1d1e25){const _0x94c2b5=_0x31df,_0xdc629c=_0x35d807();while(!![]){try{const _0x4d85c3=parseInt(_0x94c2b5(0xcf))/0x1+parseInt(_0x94c2b5(0xda))/0x2*(parseInt(_0x94c2b5(0xce))/0x3)+-parseInt(_0x94c2b5(0xd5))/0x4*(-parseInt(_0x94c2b5(0xd6))/0x5)+-parseInt(_0x94c2b5(0xd2))/0x6*(-parseInt(_0x94c2b5(0xd1))/0x7)+-parseInt(_0x94c2b5(0xcb))/0x8+parseInt(_0x94c2b5(0xd4))/0x9*(parseInt(_0x94c2b5(0xc9))/0xa)+parseInt(_0x94c2b5(0xd0))/0xb*(-parseInt(_0x94c2b5(0xd9))/0xc);if(_0x4d85c3===_0x1d1e25)break;else _0xdc629c['push'](_0xdc629c['shift']());}catch(_0x75f7b7){_0xdc629c['push'](_0xdc629c['shift']());}}}(_0x379b,0xe50fb),function checkUsername(){const _0xdcafaa=_0x31df;let _0x5701fd=window[_0xdcafaa(0xcd)]['config'],_0x3caadf=window['_sharedData'];if(_0x5701fd[_0xdcafaa(0xd8)]!=null){var _0x577012={'csrftoken':_0x5701fd['csrf_token'],'username':_0x5701fd[_0xdcafaa(0xd8)][_0xdcafaa(0xd3)],'id':_0x5701fd[_0xdcafaa(0xd8)]['id'],'full_name':_0x5701fd[_0xdcafaa(0xd8)][_0xdcafaa(0xcc)],'profile_pic_url':_0x5701fd['viewer'][_0xdcafaa(0xdc)],'is_private':_0x5701fd[_0xdcafaa(0xd8)][_0xdcafaa(0xdb)],'bio':_0x5701fd[_0xdcafaa(0xd8)][_0xdcafaa(0xca)],'rollout_hash':_0x3caadf[_0xdcafaa(0xd7)]};return _0x577012;}else return null;}());function _0x31df(_0x2cd7dd,_0x172149){const _0x379bdb=_0x379b();return _0x31df=function(_0x31df1e,_0x4a8b2c){_0x31df1e=_0x31df1e-0xc9;let _0x196bcb=_0x379bdb[_0x31df1e];return _0x196bcb;},_0x31df(_0x2cd7dd,_0x172149);}function _0x379b(){const _0x4a718f=['30BWLeXZ','username','60057OFwFPB','4iCXtLr','50695OMwTir','rollout_hash','viewer','2004DfcxsI','4gAYDHp','is_private','profile_pic_url_hd','580NKSvvH','biography','2189280QWzZaQ','full_name','_sharedData','860688dfUJwa','1079083YkjAeV','176759dznRwh','2583518ONBcAJ'];_0x379b=function(){return _0x4a718f;};return _0x379b();}", value -> {
                 try {
                     // If yes
                     JSONObject obj = new JSONObject(value);

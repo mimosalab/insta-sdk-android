@@ -1,5 +1,7 @@
 package me.aravi.instapi;
 
+import static me.aravi.instapi.InstaConfig.USER_AGENT;
+
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -11,6 +13,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import me.aravi.instapi.auth.InstaUser;
+import me.aravi.instapi.interfaces.OnAdvancedFollowResponse;
+import me.aravi.instapi.interfaces.OnAdvancedLikeResponse;
 import me.aravi.instapi.interfaces.OnFollowResponse;
 import me.aravi.instapi.interfaces.OnLikeResponse;
 import me.aravi.instapi.interfaces.OnSimpleResponse;
@@ -21,8 +25,6 @@ import me.aravi.instapi.models.profile.ProfileDetails;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static me.aravi.instapi.InstaConfig.USER_AGENT;
 
 public class InstapiSDK {
     private static InstapiSDK instance;
@@ -35,6 +37,7 @@ public class InstapiSDK {
         }
         return instance;
     }
+
 
     private InstapiSDK(Context context) {
         this.context = context;
@@ -100,7 +103,7 @@ public class InstapiSDK {
         Call<Followers> followersCall = instapi.getService().getFollowers(instaUser.getCookie(),
                 instaUser.getCsrfToken(),
                 InstaConfig.QUERY_HASH_FOLLOWERS,
-                "{\"id\": " + instaUser.getUserId() + ", \"first\": " + total_followers + "}",
+                "{id:" + instaUser.getUserId() + ", first:" + total_followers + "}",
                 USER_AGENT);
         AsyncTask.execute(() -> followersCall.enqueue(callback));
     }
@@ -109,7 +112,7 @@ public class InstapiSDK {
         Call<Followers> following = instapi.getService().getFollowing(instaUser.getCookie(),
                 instaUser.getCsrfToken(),
                 InstaConfig.QUERY_HASH_FOLLOWING,
-                "{\"id\": " + instaUser.getUserId() + ", \"first\": " + total_following + "}",
+                "{id:" + instaUser.getUserId() + ",first:" + total_following + "}",
                 USER_AGENT);
         AsyncTask.execute(() -> following.enqueue(callback));
     }
@@ -218,7 +221,6 @@ public class InstapiSDK {
     public void setAccountPrivacy(boolean is_private, InstaUser user, OnSimpleResponse listener) {
         Map<String, String> params = new HashMap<>();
         params.put("is_private", String.valueOf(is_private));
-//        params.put("MIME Type", "application/x-www-form-urlencoded");
         Call<Object> privacyCall = instapi.getService().setPrivacy(
                 user.getCookie(),
                 USER_AGENT,
@@ -243,6 +245,54 @@ public class InstapiSDK {
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
                 listener.failure(t.getMessage());
+            }
+        });
+    }
+
+
+    public void putFollowV2(long profileId, InstaUser user, OnAdvancedFollowResponse followResponse) {
+        Call<JSONObject> followV2 = instapi.getService().advancedFollow(user.getCookie(), USER_AGENT, user.getCsrfToken(), user.getRoll_hash(), profileId);
+        followV2.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        followResponse.onSuccess(response.body());
+                    } else {
+                        followResponse.onSuccess(null);
+                    }
+                } else {
+                    followResponse.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                followResponse.onFailure(t.getMessage());
+            }
+        });
+    }
+
+
+    public void putLikeV2(long postId, InstaUser user, OnAdvancedLikeResponse likeResponse) {
+        Call<JSONObject> followV2 = instapi.getService().advancedLike(user.getCookie(), USER_AGENT, user.getCsrfToken(), user.getRoll_hash(), postId);
+        followV2.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        likeResponse.OnSuccess(response.body());
+                    } else {
+                        likeResponse.OnSuccess(null);
+                    }
+                } else {
+                    likeResponse.OnFailed(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                likeResponse.OnFailed(t.getMessage());
             }
         });
     }

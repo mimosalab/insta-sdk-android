@@ -78,8 +78,8 @@ public class Instapi {
     public Endpoints getService() {
         if (endpoints == null) {
 
-            File httpCacheDirectory = new File(context.getCacheDir(), "cache_r");
-            int cacheSize = 20 * 1024 * 1024; // 20 MB
+            File httpCacheDirectory = new File(context.getCacheDir(), "instapi_cache");
+            int cacheSize = 30 * 1024 * 1024; // 30 MB
             Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
             OkHttpClient client = new OkHttpClient.Builder()
@@ -112,17 +112,17 @@ public class Instapi {
 
         @POST("web/friendships/{user_id}/follow/")
         Call<Object> follow(@Header("Cookie") String cookie,
-                                @Header("X-CSRFToken") String csrfToken,
-                                @Header("X-Instagram-AJAX") String ajax,
-                                @Header("User-Agent") String agent,
-                                @Path("user_id") String userId);
-
-        @POST("web/friendships/{user_id}/unfollow/")
-        Call<Object> unFollow(@Header("Cookie") String cookie,
                             @Header("X-CSRFToken") String csrfToken,
                             @Header("X-Instagram-AJAX") String ajax,
                             @Header("User-Agent") String agent,
                             @Path("user_id") String userId);
+
+        @POST("web/friendships/{user_id}/unfollow/")
+        Call<Object> unFollow(@Header("Cookie") String cookie,
+                              @Header("X-CSRFToken") String csrfToken,
+                              @Header("X-Instagram-AJAX") String ajax,
+                              @Header("User-Agent") String agent,
+                              @Path("user_id") String userId);
 
         @GET("graphql/query/")
         Call<AllPosts> getAllPosts(@Header("Cookie") String cookie,
@@ -202,6 +202,36 @@ public class Instapi {
                                 @Header("X-Instagram-AJAX") String rollHash,
                                 @FieldMap Map<String, String> params);
 
+
+        @POST("/web/friendships/{user_id}/follow")
+        Call<JSONObject> advancedFollow(@Header("Cookie") String cookie,
+                                    @Header("User-Agent") String user,
+                                    @Header("X-CSRFToken") String csrfToken,
+                                    @Header("X-Instagram-AJAX") String rollHash,
+                                    @Path("user_id") long userId);
+
+        @POST("/web/friendships/{user_id}/unfollow")
+        Call<JSONObject> advancedUnFollow(@Header("Cookie") String cookie,
+                                      @Header("User-Agent") String user,
+                                      @Header("X-CSRFToken") String csrfToken,
+                                      @Header("X-Instagram-AJAX") String rollHash,
+                                      @Path("user_id") long userId);
+
+
+        @POST("/web/likes/{post_id}/like")
+        Call<JSONObject> advancedLike(@Header("Cookie") String cookie,
+                                      @Header("User-Agent") String user,
+                                      @Header("X-CSRFToken") String csrfToken,
+                                      @Header("X-Instagram-AJAX") String rollHash,
+                                      @Path("post_id") long postId);
+
+
+        @POST("/web/likes/{post_id}/unlike")
+        Call<JSONObject> advancedDislike(@Header("Cookie") String cookie,
+                                         @Header("User-Agent") String user,
+                                         @Header("X-CSRFToken") String csrfToken,
+                                         @Header("X-Instagram-AJAX") String rollHash,
+                                         @Path("post_id") long postId);
 
     }
 
