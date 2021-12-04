@@ -98,24 +98,72 @@ public class InstapiSDK {
         AsyncTask.execute(() -> postDetailsCall.enqueue(callback));
     }
 
-
+    /**
+     * Usually the first query
+     *
+     * @param instaUser
+     * @param max
+     * @param callback
+     */
     public void getFollowersList(InstaUser instaUser, int max, Callback<Followers> callback) {
         Call<Followers> followersCall = instapi.getService().getFollowers(instaUser.getCookie(),
                 instaUser.getCsrfToken(),
                 InstaConfig.QUERY_HASH_FOLLOWERS,
                 "{\"id\":\"" + instaUser.getUserId() + "\",\"first\":" + max + "}",
                 USER_AGENT);
-        AsyncTask.execute(() -> followersCall.enqueue(callback));
+        followersCall.enqueue(callback);
     }
 
 
+    /**
+     * after is the pageInfo/end_cursor from the previous or first query
+     *
+     * @param instaUser
+     * @param max
+     * @param after
+     * @param callback
+     */
+    public void getFollowersList(InstaUser instaUser, int max, String after, Callback<Followers> callback) {
+        Call<Followers> followersCall = instapi.getService().getFollowers(instaUser.getCookie(),
+                instaUser.getCsrfToken(),
+                InstaConfig.QUERY_HASH_FOLLOWERS,
+                "{\"id\":\"" + instaUser.getUserId() + "\",\"first\":" + max + ",\"after\":\"" + after + "\"}",
+                USER_AGENT);
+        followersCall.enqueue(callback);
+    }
+
+
+    /**
+     * Usually the first query
+     *
+     * @param instaUser
+     * @param max
+     * @param callback
+     */
     public void getFollowingList(InstaUser instaUser, int max, Callback<Followers> callback) {
         Call<Followers> following = instapi.getService().getFollowing(instaUser.getCookie(),
                 instaUser.getCsrfToken(),
                 InstaConfig.QUERY_HASH_FOLLOWING,
                 "{\"id\":\"" + instaUser.getUserId() + "\",\"first\":" + max + "}",
                 USER_AGENT);
-        AsyncTask.execute(() -> following.enqueue(callback));
+        following.enqueue(callback);
+    }
+
+    /**
+     * after is the pageInfo/end_cursor from the previous or first query
+     *
+     * @param instaUser
+     * @param max
+     * @param after
+     * @param callback
+     */
+    public void getFollowingList(InstaUser instaUser, int max, String after, Callback<Followers> callback) {
+        Call<Followers> following = instapi.getService().getFollowing(instaUser.getCookie(),
+                instaUser.getCsrfToken(),
+                InstaConfig.QUERY_HASH_FOLLOWING,
+                "{\"id\":\"" + instaUser.getUserId() + "\",\"first\":" + max + ",\"after\":\"" + after + "\"}",
+                USER_AGENT);
+        following.enqueue(callback);
     }
 
     /**
