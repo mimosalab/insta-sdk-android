@@ -1,9 +1,11 @@
-package me.aravi.instapi;
+package me.aravi.instapi.bean;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+@Keep
 public class PostBean {
 
     private String id;

@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import me.aravi.instapi.PostBean;
+import me.aravi.instapi.bean.PostBean;
 
 public interface OnPostsUpdated {
 

@@ -2,7 +2,9 @@ package me.aravi.instapi.example;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
@@ -17,10 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Objects;
 
 import me.aravi.instapi.InstapiSDK;
+import me.aravi.instapi.bean.PostBean;
 import me.aravi.instapi.auth.InstaAuth;
 import me.aravi.instapi.auth.InstaUser;
 import me.aravi.instapi.example.databinding.ActivityMainBinding;
 import me.aravi.instapi.interfaces.OnFollowResponse;
+import me.aravi.instapi.interfaces.OnPostDetails;
 import me.aravi.instapi.interfaces.OnSimpleResponse;
 import me.aravi.instapi.models.profile.ProfileDetails;
 import retrofit2.Call;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private InstaAuth iAuth;
     private InstapiSDK instapiSDK;
     private ActivityMainBinding binding;
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +67,37 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        binding.followButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                long userId = Long.parseLong(Objects.requireNonNull(binding.followIdBox.getText()).toString());
-                instapiSDK.followAccount(userId, iAuth.getCurrentUser(), new OnFollowResponse() {
+        binding.followButton.setOnClickListener(v -> {
+            long userId = Long.parseLong(Objects.requireNonNull(binding.followIdBox.getText()).toString());
+            instapiSDK.followAccount(userId, iAuth.getCurrentUser(), new OnFollowResponse() {
+                @Override
+                public void onSuccess(@Nullable String response) {
+                    Toast.makeText(MainActivity.this, "Success :" + response, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    Toast.makeText(MainActivity.this, "Error :" + message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+
+        binding.postBtn.setOnClickListener(v -> {
+            AsyncTask.execute(() -> {
+                instapiSDK.postDetails(iAuth.getCurrentUser(), "CYny7uYhFvj", new OnPostDetails() {
                     @Override
-                    public void onSuccess(@Nullable String response) {
-                        Toast.makeText(MainActivity.this, "Success :" + response, Toast.LENGTH_SHORT).show();
+                    public void onReceive(PostBean postBean, String raw) {
+                        Log.i(TAG, "onReceive:  " + postBean.toString());
                     }
 
                     @Override
-                    public void onFailure(String message) {
-                        Toast.makeText(MainActivity.this, "Error :" + message, Toast.LENGTH_SHORT).show();
+                    public void onFailure(int errorCode, String message) {
+                        Log.i(TAG, "onFailure: " + message);
                     }
                 });
-            }
+            });
+
         });
 
     }

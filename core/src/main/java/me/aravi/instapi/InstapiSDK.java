@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import me.aravi.instapi.auth.InstaUser;
+import me.aravi.instapi.bean.PostBean;
 import me.aravi.instapi.interfaces.OnAdvancedFollowResponse;
 import me.aravi.instapi.interfaces.OnAdvancedLikeResponse;
 import me.aravi.instapi.interfaces.OnFollowResponse;
@@ -279,15 +280,15 @@ public class InstapiSDK {
         String queryHash = InstaConfig.QUERY_HASH_POSTS;
         String variables = "{\"id\":\"" + user.getUserId() + "\",\"first\":" + max + "}";
         // Build call
-        Call<String> getCurrentUserPosts = instapi.getService()
+        Call<Object> getCurrentUserPosts = instapi.getService()
                 .getRawAllPosts(user.getCookie(), user.getCsrfToken(), queryHash, variables, USER_AGENT);
 
-        getCurrentUserPosts.enqueue(new Callback<String>() {
+        getCurrentUserPosts.enqueue(new Callback<Object>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<Object> call, Response<Object> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
-                        JSONObject jsonObj = new JSONObject(response.body());
+                        JSONObject jsonObj = new JSONObject(response.body().toString());
                         JSONObject data = jsonObj.getJSONObject("data");
                         JSONObject user = data.getJSONObject("user");
                         JSONObject timeline_media = user.getJSONObject("edge_owner_to_timeline_media");
@@ -352,9 +353,9 @@ public class InstapiSDK {
 
                                 postBeanList.add(bean);
                             }
-                            listener.onRetrieved(postCount, postBeanList, response.body());
+                            listener.onRetrieved(postCount, postBeanList, response.body().toString());
                         } else {
-                            listener.onRetrieved(post_edges.length(), postBeanList, response.body());
+                            listener.onRetrieved(post_edges.length(), postBeanList, response.body().toString());
                         }
 
                     } catch (JSONException e) {
@@ -367,7 +368,7 @@ public class InstapiSDK {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<Object> call, Throwable t) {
                 listener.onFailedToRetrieve(InstaConfig.CONNECTION_ERROR_CODE, t.getMessage());
                 t.printStackTrace();
             }
@@ -379,15 +380,15 @@ public class InstapiSDK {
         String queryHash = InstaConfig.QUERY_HASH_POSTS;
         String variables = "{\"id\":\"" + user.getUserId() + "\",\"first\":" + max + "\",\"after\":" + cursor + "}";
         // Build call
-        Call<String> getCurrentUserPosts = instapi.getService()
+        Call<Object> getCurrentUserPosts = instapi.getService()
                 .getRawAllPosts(user.getCookie(), user.getCsrfToken(), queryHash, variables, USER_AGENT);
 
-        getCurrentUserPosts.enqueue(new Callback<String>() {
+        getCurrentUserPosts.enqueue(new Callback<Object>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<Object> call, Response<Object> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
-                        JSONObject jsonObj = new JSONObject(response.body());
+                        JSONObject jsonObj = new JSONObject(response.body().toString());
                         JSONObject data = jsonObj.getJSONObject("data");
                         JSONObject user = data.getJSONObject("user");
                         JSONObject timeline_media = user.getJSONObject("edge_owner_to_timeline_media");
@@ -453,9 +454,9 @@ public class InstapiSDK {
 
                                 postBeanList.add(bean);
                             }
-                            listener.onRetrieved(postCount, postBeanList, response.body());
+                            listener.onRetrieved(postCount, postBeanList, response.body().toString());
                         } else {
-                            listener.onRetrieved(post_edges.length(), postBeanList, response.body());
+                            listener.onRetrieved(post_edges.length(), postBeanList, response.body().toString());
                         }
 
                     } catch (JSONException e) {
@@ -468,28 +469,29 @@ public class InstapiSDK {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
+            public void onFailure(Call<Object> call, Throwable t) {
+                listener.onFailedToRetrieve(InstaConfig.CONNECTION_ERROR_CODE, t.getMessage());
+                t.printStackTrace();
             }
         });
 
     }
 
     public void postDetails(InstaUser instaUser, String shortCode, OnPostDetails listener) {
-        Call<String> postDetailsCall = instapi.getService()
+        Call<Object> postDetailsCall = instapi.getService()
                 .getRawPostDetails(USER_AGENT, instaUser.getCookie(), instaUser.getCsrfToken(), shortCode);
         PostBean postBean = new PostBean();
         ArrayList<String> resourceUrls = new ArrayList<>();
         ArrayList<String> thumbnailUrls = new ArrayList<>();
 
-        postDetailsCall.enqueue(new Callback<String>() {
+        postDetailsCall.enqueue(new Callback<Object>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<Object> call, Response<Object> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String caption = "", video_url = "null";
 
-                        JSONObject jsonObj = new JSONObject(response.body());
+                        JSONObject jsonObj = new JSONObject(response.body().toString());
                         JSONObject graphql = jsonObj.getJSONObject("graphql");
                         JSONObject shortcode_media = graphql.getJSONObject("shortcode_media");
 
@@ -583,19 +585,19 @@ public class InstapiSDK {
                         postBean.setUserSavedIt(shortcode_media.getBoolean("viewer_has_saved"));
                         postBean.setDisplayResources(resourceUrls);
 
-                        listener.onReceive(postBean, response.body());
+                        listener.onReceive(postBean, response.body().toString());
 
                     } catch (JSONException e) {
                         listener.onFailure(InstaConfig.PARSE_ERROR_CODE, e.getMessage());
                         e.printStackTrace();
                     }
                 } else {
-                    listener.onFailure(InstaConfig.SERVER_ERROR_CODE, response.body());
+                    listener.onFailure(InstaConfig.SERVER_ERROR_CODE, response.body().toString());
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<Object> call, Throwable t) {
                 listener.onFailure(InstaConfig.CONNECTION_ERROR_CODE, t.getMessage());
                 t.printStackTrace();
             }

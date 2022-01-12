@@ -233,39 +233,39 @@ public class Instapi {
 
         // RAW methods
         @GET("/{username}/?__a=1")
-        Call<String> getRawUserProfile(@Header("Cookie") String cookie,
+        Call<Object> getRawUserProfile(@Header("Cookie") String cookie,
                                        @Header("X-Csrftoken") String csrfToken,
                                        @Header("user-agent") String userAgent,
                                        @Path(("username")) String username);
 
         @GET("p/{post_short_code}/?__a=1")
-        Call<String> getRawPostDetails(@Header("User-Agent") String user_agent,
+        Call<Object> getRawPostDetails(@Header("User-Agent") String user_agent,
                                        @Header("Cookie") String cookie,
                                        @Header("X-csrftoken") String csrfToken,
                                        @Path("post_short_code") String post_short_code);
 
         @GET("graphql/query/")
-        Call<String> getRawFollowers(@Header("Cookie") String cookie,
+        Call<Object> getRawFollowers(@Header("Cookie") String cookie,
                                      @Header("x-csrftoken") String csrfToken,
                                      @Query("query_hash") String queryHash,
                                      @Query("variables") String variables,
                                      @Header("user-agent") String user_agent);
 
         @GET("graphql/query/")
-        Call<String> getRawFollowing(@Header("Cookie") String cookie,
+        Call<Object> getRawFollowing(@Header("Cookie") String cookie,
                                      @Header("x-csrftoken") String csrfToken,
                                      @Query("query_hash") String queryHash,
                                      @Query("variables") String variables,
                                      @Header("user-agent") String user_agent);
 
         @POST("web/likes/{post_id}/like/")
-        Call<String> actionRawLikePost(@Header("Cookie") String cookie,
+        Call<Object> actionRawLikePost(@Header("Cookie") String cookie,
                                        @Header("X-Csrftoken") String csrfToken,
                                        @Header("user-agent") String userAgent,
                                        @Path("post_id") long postId);
 
         @GET("graphql/query/")
-        Call<String> getRawAllPosts(@Header("Cookie") String cookie,
+        Call<Object> getRawAllPosts(@Header("Cookie") String cookie,
                                    @Header("x-csrftoken") String csrfToken,
                                    @Query("query_hash") String queryHash,
                                    @Query("variables") String variables,
