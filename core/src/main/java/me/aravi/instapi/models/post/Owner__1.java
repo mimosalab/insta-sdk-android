@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Keep
-public class Owner {
+public class Owner__1 {
 
     @SerializedName("id")
     @Expose
@@ -25,7 +25,7 @@ public class Owner {
      * No args constructor for use in serialization
      * 
      */
-    public Owner() {
+    public Owner__1() {
     }
 
     /**
@@ -35,7 +35,7 @@ public class Owner {
      * @param id
      * @param username
      */
-    public Owner(String id, Boolean isVerified, String profilePicUrl, String username) {
+    public Owner__1(String id, Boolean isVerified, String profilePicUrl, String username) {
         super();
         this.id = id;
         this.isVerified = isVerified;
@@ -78,7 +78,7 @@ public class Owner {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Owner.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Owner__1 .class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
         sb.append(((this.id == null)?"<null>":this.id));

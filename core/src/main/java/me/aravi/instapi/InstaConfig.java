@@ -5,4 +5,12 @@ public class InstaConfig {
     public static String QUERY_HASH_POSTS = "f2405b236d85e8296cf30347c9f08c2a";
     public static String QUERY_HASH_FOLLOWING = "d04b0a864b4b54837c0d870b0e77e076";
     public static String QUERY_HASH_FOLLOWERS = "c76146de99bb02f6415203be841dd25a";
+
+
+    public static final int SERVER_ERROR_CODE = 293;
+    public static final int CONNECTION_ERROR_CODE = 243;
+    public static final int PARSE_ERROR_CODE = 233;
+    public static final int UNKNOWN_ERROR_CODE = 223;
+
+
 }

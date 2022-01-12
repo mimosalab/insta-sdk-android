@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Keep
-public class DisplayResource {
+public class DisplayResource__1 {
 
     @SerializedName("src")
     @Expose
@@ -22,7 +22,7 @@ public class DisplayResource {
      * No args constructor for use in serialization
      * 
      */
-    public DisplayResource() {
+    public DisplayResource__1() {
     }
 
     /**
@@ -31,7 +31,7 @@ public class DisplayResource {
      * @param configHeight
      * @param src
      */
-    public DisplayResource(String src, Long configWidth, Long configHeight) {
+    public DisplayResource__1(String src, Long configWidth, Long configHeight) {
         super();
         this.src = src;
         this.configWidth = configWidth;
@@ -65,7 +65,7 @@ public class DisplayResource {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(DisplayResource.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(DisplayResource__1 .class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("src");
         sb.append('=');
         sb.append(((this.src == null)?"<null>":this.src));
