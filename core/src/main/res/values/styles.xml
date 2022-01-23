@@ -7,13 +7,14 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
         <item name="android:statusBarColor">@color/grey_100</item>
+        <item name="android:navigationBarColor">@color/grey_100</item>
         <item name="statusBarBackground">@color/grey_100</item>
-
+        <item name="fontFamily">@font/bold</item>
     </style>
 
 
     <style name="ToolbarTitleTextAppearance">
         <item name="android:textSize">16sp</item>
-        <!--        <item name="fontFamily">@font/product_sans_bold</item>-->
+
     </style>
 </resources>

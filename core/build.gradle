@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id("maven-publish")
 }
+apply plugin: 'kotlin-android'
 
 
 static def isReleaseBuild() {
@@ -13,7 +14,7 @@ def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
 
 def getVersionName = { ->
-    return "1.3.1" // Replace with version Name
+    return "1.5.0" // Replace with version Name
 }
 
 def getArtificatId = { ->
@@ -46,7 +47,7 @@ def getPublicationName() {
 
 publishing {
     publications {
-        "${getPublicationName()}" (MavenPublication) {
+        "${getPublicationName()}"(MavenPublication) {
             groupId "me.aravi.instasdk"
             artifactId getArtificatId()
             version getVersionName()
@@ -75,7 +76,6 @@ publishing {
         }
     }
 }
-
 
 
 android {
@@ -109,17 +109,26 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
+    implementation "androidx.core:core-ktx:1.6.0"
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation "androidx.security:security-crypto:1.1.0-alpha03"
-
+    api "androidx.security:security-crypto:1.1.0-alpha03"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

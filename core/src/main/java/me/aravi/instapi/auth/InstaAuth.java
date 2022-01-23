@@ -1,5 +1,8 @@
 package me.aravi.instapi.auth;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,13 +15,11 @@ import java.security.GeneralSecurityException;
 
 import me.aravi.instapi.BuildConfig;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class InstaAuth {
-
+    @SuppressLint("StaticFieldLeak")
     private static InstaAuth instance;
-    private Context context;
-    private SharedPreferences preferences;
+    private final Context context;
+    private final SharedPreferences preferences;
 
     public static InstaAuth getInstance(Context context) {
         if (instance == null) {
@@ -34,7 +35,6 @@ public class InstaAuth {
 
     public InstaUser getCurrentUser() {
         if (preferences.getBoolean("status", false)) {
-
             InstaUser instaUser = new InstaUser();
             instaUser.setUsername(preferences.getString("username", ""));
             instaUser.setFullName(preferences.getString("name", ""));

@@ -19,4 +19,5 @@
   }
 })()
     </string>
+    <string name="login_title">Login with Instagram</string>
 </resources>

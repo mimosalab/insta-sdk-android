@@ -1,9 +1,11 @@
 package me.aravi.instapi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -11,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import me.aravi.instapi.bean.post.PostNormalBean;
 import me.aravi.instapi.models.allposts.AllPosts;
 import me.aravi.instapi.models.followers.Followers;
 import me.aravi.instapi.models.post.PostDetails;
@@ -40,6 +43,9 @@ public class Instapi {
     private Context context;
     private static Endpoints endpoints;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor sharedEditor;
+
     public static Instapi getInstance(Context context) {
         if (instance == null) {
             instance = new Instapi(context);
@@ -50,6 +56,8 @@ public class Instapi {
 
     private Instapi(Context context) {
         this.context = context;
+        this.sharedPreferences = context.getSharedPreferences("instapi_cache", Context.MODE_PRIVATE);
+        this.sharedEditor = sharedPreferences.edit();
     }
 
 
@@ -58,14 +66,14 @@ public class Instapi {
         public Response intercept(Chain chain) throws IOException {
             Response originalResponse = chain.proceed(chain.request());
             if (NetworkUtils.isNetworkAvailable(instance.context)) {
-                int maxAge = 60 * 5;
+                int maxAge = 60 * 60; // 1 hour
                 return originalResponse.newBuilder()
                         .removeHeader("Cache-Control")
                         .removeHeader("Pragma")
                         .header("Cache-Control", "public, max-age=" + maxAge)
                         .build();
             } else {
-                int maxStale = 60 * 60 * 24 * 24;
+                int maxStale = 60 * 60 * 24; // 1 day
                 return originalResponse.newBuilder()
                         .removeHeader("Cache-Control")
                         .removeHeader("Pragma")
@@ -75,11 +83,11 @@ public class Instapi {
         }
     };
 
+
     public Endpoints getService() {
         if (endpoints == null) {
-
-            File httpCacheDirectory = new File(context.getCacheDir(), "instapi_cache");
-            int cacheSize = 30 * 1024 * 1024; // 30 MB
+            File httpCacheDirectory = new File(context.getFilesDir(), "instapi");
+            int cacheSize = 200 * 1024 * 1024; // 200 MB
             Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
             OkHttpClient client = new OkHttpClient.Builder()
@@ -89,6 +97,7 @@ public class Instapi {
 
             Gson gson = new GsonBuilder()
                     .setLenient()
+                    .serializeNulls()
                     .create();
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -224,7 +233,7 @@ public class Instapi {
 
 
         @POST("/web/likes/{post_id}/unlike")
-        Call<JSONObject> advancedDislike(@Header("Cookie") String cookie,
+        Call<JsonObject> advancedDislike(@Header("Cookie") String cookie,
                                          @Header("User-Agent") String user,
                                          @Header("X-CSRFToken") String csrfToken,
                                          @Header("X-Instagram-AJAX") String rollHash,
@@ -233,43 +242,43 @@ public class Instapi {
 
         // RAW methods
         @GET("/{username}/?__a=1")
-        Call<Object> getRawUserProfile(@Header("Cookie") String cookie,
-                                       @Header("X-Csrftoken") String csrfToken,
-                                       @Header("user-agent") String userAgent,
-                                       @Path(("username")) String username);
+        Call<JsonObject> getRawUserProfile(@Header("Cookie") String cookie,
+                                           @Header("X-Csrftoken") String csrfToken,
+                                           @Header("user-agent") String userAgent,
+                                           @Path(("username")) String username);
 
-        @GET("p/{post_short_code}/?__a=1")
-        Call<Object> getRawPostDetails(@Header("User-Agent") String user_agent,
-                                       @Header("Cookie") String cookie,
-                                       @Header("X-csrftoken") String csrfToken,
-                                       @Path("post_short_code") String post_short_code);
-
-        @GET("graphql/query/")
-        Call<Object> getRawFollowers(@Header("Cookie") String cookie,
-                                     @Header("x-csrftoken") String csrfToken,
-                                     @Query("query_hash") String queryHash,
-                                     @Query("variables") String variables,
-                                     @Header("user-agent") String user_agent);
+        @GET
+        Call<PostNormalBean> getRawPostDetails(@Header("User-Agent") String user_agent,
+                                               @Header("Cookie") String cookie,
+                                               @Header("X-csrftoken") String csrfToken,
+                                               @Url String post_url);
 
         @GET("graphql/query/")
-        Call<Object> getRawFollowing(@Header("Cookie") String cookie,
-                                     @Header("x-csrftoken") String csrfToken,
-                                     @Query("query_hash") String queryHash,
-                                     @Query("variables") String variables,
-                                     @Header("user-agent") String user_agent);
+        Call<JsonObject> getRawFollowers(@Header("Cookie") String cookie,
+                                         @Header("x-csrftoken") String csrfToken,
+                                         @Query("query_hash") String queryHash,
+                                         @Query("variables") String variables,
+                                         @Header("user-agent") String user_agent);
+
+        @GET("graphql/query/")
+        Call<JsonObject> getRawFollowing(@Header("Cookie") String cookie,
+                                         @Header("x-csrftoken") String csrfToken,
+                                         @Query("query_hash") String queryHash,
+                                         @Query("variables") String variables,
+                                         @Header("user-agent") String user_agent);
 
         @POST("web/likes/{post_id}/like/")
-        Call<Object> actionRawLikePost(@Header("Cookie") String cookie,
-                                       @Header("X-Csrftoken") String csrfToken,
-                                       @Header("user-agent") String userAgent,
-                                       @Path("post_id") long postId);
+        Call<JsonObject> actionRawLikePost(@Header("Cookie") String cookie,
+                                           @Header("X-Csrftoken") String csrfToken,
+                                           @Header("user-agent") String userAgent,
+                                           @Path("post_id") long postId);
 
         @GET("graphql/query/")
-        Call<Object> getRawAllPosts(@Header("Cookie") String cookie,
-                                   @Header("x-csrftoken") String csrfToken,
-                                   @Query("query_hash") String queryHash,
-                                   @Query("variables") String variables,
-                                   @Header("user-agent") String user_agent);
+        Call<JsonObject> getRawAllPosts(@Header("Cookie") String cookie,
+                                        @Header("x-csrftoken") String csrfToken,
+                                        @Query("query_hash") String queryHash,
+                                        @Query("variables") String variables,
+                                        @Header("user-agent") String user_agent);
 
 
     }

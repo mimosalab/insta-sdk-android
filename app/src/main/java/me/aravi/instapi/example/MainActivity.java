@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -19,12 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Objects;
 
 import me.aravi.instapi.InstapiSDK;
-import me.aravi.instapi.bean.PostBean;
 import me.aravi.instapi.auth.InstaAuth;
 import me.aravi.instapi.auth.InstaUser;
+import me.aravi.instapi.bean.post.PostNormalBean;
 import me.aravi.instapi.example.databinding.ActivityMainBinding;
 import me.aravi.instapi.interfaces.OnFollowResponse;
-import me.aravi.instapi.interfaces.OnPostDetails;
+import me.aravi.instapi.interfaces.OnPostInformationReceivedListener;
 import me.aravi.instapi.interfaces.OnSimpleResponse;
 import me.aravi.instapi.models.profile.ProfileDetails;
 import retrofit2.Call;
@@ -85,15 +87,23 @@ public class MainActivity extends AppCompatActivity {
 
         binding.postBtn.setOnClickListener(v -> {
             AsyncTask.execute(() -> {
-                instapiSDK.postDetails(iAuth.getCurrentUser(), "CYny7uYhFvj", new OnPostDetails() {
+                instapiSDK.postDetails(iAuth.getCurrentUser(), "https://www.instagram.com/p/CY4AxZ7hD8t/", new OnPostInformationReceivedListener() {
+
                     @Override
-                    public void onReceive(PostBean postBean, String raw) {
+                    public void onReceive(PostNormalBean postBean, String raw) {
                         Log.i(TAG, "onReceive:  " + postBean.toString());
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            Toast.makeText(MainActivity.this, "P:" + postBean.getItems().get(0).getCaption().getText(), Toast.LENGTH_SHORT).show();
+
+                        });
                     }
 
                     @Override
                     public void onFailure(int errorCode, String message) {
-                        Log.i(TAG, "onFailure: " + message);
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            Toast.makeText(MainActivity.this, "Error:" + message + "code:" +errorCode, Toast.LENGTH_SHORT).show();
+
+                        });
                     }
                 });
             });

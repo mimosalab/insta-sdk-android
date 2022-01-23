@@ -1,9 +1,15 @@
 package me.aravi.instapi;
 
+import static me.aravi.instapi.InstaConfig.CONNECTION_ERROR_CODE;
+import static me.aravi.instapi.InstaConfig.PARSE_ERROR_CODE;
+import static me.aravi.instapi.InstaConfig.SERVER_ERROR_CODE;
+import static me.aravi.instapi.InstaConfig.UNKNOWN_ERROR_CODE;
 import static me.aravi.instapi.InstaConfig.USER_AGENT;
 
 import android.content.Context;
 import android.os.AsyncTask;
+
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,11 +24,12 @@ import java.util.Objects;
 
 import me.aravi.instapi.auth.InstaUser;
 import me.aravi.instapi.bean.PostBean;
+import me.aravi.instapi.bean.post.PostNormalBean;
 import me.aravi.instapi.interfaces.OnAdvancedFollowResponse;
 import me.aravi.instapi.interfaces.OnAdvancedLikeResponse;
 import me.aravi.instapi.interfaces.OnFollowResponse;
 import me.aravi.instapi.interfaces.OnLikeResponse;
-import me.aravi.instapi.interfaces.OnPostDetails;
+import me.aravi.instapi.interfaces.OnPostInformationReceivedListener;
 import me.aravi.instapi.interfaces.OnPostsUpdated;
 import me.aravi.instapi.interfaces.OnSimpleResponse;
 import me.aravi.instapi.models.allposts.AllPosts;
@@ -37,6 +44,8 @@ public class InstapiSDK {
     private static InstapiSDK instance;
     private Context context;
     private Instapi instapi;
+
+    public static final String TAG = InstapiSDK.class.getSimpleName();
 
     public static InstapiSDK getInstance(Context context) {
         if (instance == null) {
@@ -280,12 +289,12 @@ public class InstapiSDK {
         String queryHash = InstaConfig.QUERY_HASH_POSTS;
         String variables = "{\"id\":\"" + user.getUserId() + "\",\"first\":" + max + "}";
         // Build call
-        Call<Object> getCurrentUserPosts = instapi.getService()
+        Call<JsonObject> getCurrentUserPosts = instapi.getService()
                 .getRawAllPosts(user.getCookie(), user.getCsrfToken(), queryHash, variables, USER_AGENT);
 
-        getCurrentUserPosts.enqueue(new Callback<Object>() {
+        getCurrentUserPosts.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         JSONObject jsonObj = new JSONObject(response.body().toString());
@@ -344,12 +353,27 @@ public class InstapiSDK {
                                 bean.setDisplayResources(displayResources);
                                 bean.setId(node.getString("id"));
                                 bean.setOwnerInfo(node.getJSONObject("owner").getString("username"));
-                                bean.setThumbnailSrc(node.getString("thumbnail_src"));
                                 bean.setCaption(caption);
-                                bean.setLikeCount(node.getJSONObject("edge_media_preview_like").getLong("count"));
-                                bean.setCommentCount(node.getJSONObject("edge_media_to_comment").getLong("count"));
                                 bean.setUserLikedIt(node.getBoolean("viewer_has_liked"));
                                 bean.setUserSavedIt(node.getBoolean("viewer_has_saved"));
+
+                                try {
+                                    bean.setThumbnailSrc(node.getString("thumbnail_src"));
+                                } catch (Exception e) {
+                                    bean.setThumbnailSrc("");
+                                }
+
+                                try {
+                                    bean.setLikeCount(node.getJSONObject("edge_media_preview_like").getLong("count"));
+                                } catch (Exception e) {
+                                    bean.setLikeCount(0);
+                                }
+
+                                try {
+                                    bean.setCommentCount(node.getJSONObject("edge_media_to_comment").getLong("count"));
+                                } catch (Exception e) {
+                                    bean.setCommentCount(0);
+                                }
 
                                 postBeanList.add(bean);
                             }
@@ -368,7 +392,7 @@ public class InstapiSDK {
             }
 
             @Override
-            public void onFailure(Call<Object> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 listener.onFailedToRetrieve(InstaConfig.CONNECTION_ERROR_CODE, t.getMessage());
                 t.printStackTrace();
             }
@@ -380,12 +404,12 @@ public class InstapiSDK {
         String queryHash = InstaConfig.QUERY_HASH_POSTS;
         String variables = "{\"id\":\"" + user.getUserId() + "\",\"first\":" + max + "\",\"after\":" + cursor + "}";
         // Build call
-        Call<Object> getCurrentUserPosts = instapi.getService()
+        Call<JsonObject> getCurrentUserPosts = instapi.getService()
                 .getRawAllPosts(user.getCookie(), user.getCsrfToken(), queryHash, variables, USER_AGENT);
 
-        getCurrentUserPosts.enqueue(new Callback<Object>() {
+        getCurrentUserPosts.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         JSONObject jsonObj = new JSONObject(response.body().toString());
@@ -445,12 +469,27 @@ public class InstapiSDK {
                                 bean.setDisplayResources(displayResources);
                                 bean.setId(node.getString("id"));
                                 bean.setOwnerInfo(node.getJSONObject("owner").getString("username"));
-                                bean.setThumbnailSrc(node.getString("thumbnail_src"));
                                 bean.setCaption(caption);
-                                bean.setLikeCount(node.getJSONObject("edge_media_preview_like").getLong("count"));
-                                bean.setCommentCount(node.getJSONObject("edge_media_to_comment").getLong("count"));
                                 bean.setUserLikedIt(node.getBoolean("viewer_has_liked"));
                                 bean.setUserSavedIt(node.getBoolean("viewer_has_saved"));
+
+                                try {
+                                    bean.setThumbnailSrc(node.getString("thumbnail_src"));
+                                } catch (Exception e) {
+                                    bean.setThumbnailSrc("");
+                                }
+
+                                try {
+                                    bean.setLikeCount(node.getJSONObject("edge_media_preview_like").getLong("count"));
+                                } catch (Exception e) {
+                                    bean.setLikeCount(0);
+                                }
+
+                                try {
+                                    bean.setCommentCount(node.getJSONObject("edge_media_to_comment").getLong("count"));
+                                } catch (Exception e) {
+                                    bean.setCommentCount(0);
+                                }
 
                                 postBeanList.add(bean);
                             }
@@ -469,7 +508,7 @@ public class InstapiSDK {
             }
 
             @Override
-            public void onFailure(Call<Object> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 listener.onFailedToRetrieve(InstaConfig.CONNECTION_ERROR_CODE, t.getMessage());
                 t.printStackTrace();
             }
@@ -477,131 +516,43 @@ public class InstapiSDK {
 
     }
 
-    public void postDetails(InstaUser instaUser, String shortCode, OnPostDetails listener) {
-        Call<Object> postDetailsCall = instapi.getService()
-                .getRawPostDetails(USER_AGENT, instaUser.getCookie(), instaUser.getCsrfToken(), shortCode);
-        PostBean postBean = new PostBean();
-        ArrayList<String> resourceUrls = new ArrayList<>();
-        ArrayList<String> thumbnailUrls = new ArrayList<>();
+    public void postDetails(InstaUser instaUser, String postUrl, OnPostInformationReceivedListener listener) {
+        postUrl = postUrl + "?__a=1";
 
-        postDetailsCall.enqueue(new Callback<Object>() {
+        Call<PostNormalBean> postCall = instapi.getService().getRawPostDetails(
+                USER_AGENT,
+                instaUser.getCookie(),
+                instaUser.getCsrfToken(),
+                postUrl
+        );
+
+        postCall.enqueue(new Callback<PostNormalBean>() {
             @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    try {
-                        String caption = "", video_url = "null";
-
-                        JSONObject jsonObj = new JSONObject(response.body().toString());
-                        JSONObject graphql = jsonObj.getJSONObject("graphql");
-                        JSONObject shortcode_media = graphql.getJSONObject("shortcode_media");
-
-                        String display_url = shortcode_media.getString("display_url");
-                        boolean is_video = shortcode_media.getBoolean("is_video");
-                        if (is_video) {
-                            video_url = shortcode_media.getString("video_url");
-                        }
-
-                        JSONObject owner = shortcode_media.getJSONObject("owner");
-                        String username = owner.getString("username");
-                        String full_name = owner.getString("full_name");
-                        String profile_pic_url = owner.getString("profile_pic_url");
-
-                        JSONObject edge_media_to_caption = shortcode_media.getJSONObject("edge_media_to_caption");
-                        JSONArray edges_caption = edge_media_to_caption.getJSONArray("edges");
-                        if (edges_caption != null && edges_caption.length() > 0) {
-                            caption = edges_caption
-                                    .getJSONObject(0)
-                                    .getJSONObject("node")
-                                    .getString("text");
-                        }
-
-
-                        JSONObject edge_web_media_to_related_media = shortcode_media.getJSONObject("edge_web_media_to_related_media");
-                        JSONArray edges = edge_web_media_to_related_media.getJSONArray("edges");
-
-                        JSONArray edges1 = null;
-                        try {
-                            JSONObject edge_sidecar_to_children = shortcode_media.getJSONObject("edge_sidecar_to_children");
-                            edges1 = edge_sidecar_to_children.getJSONArray("edges");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        //Checks for multiple posts
-                        String edge_display_url, edge_video_url = "null";
-                        boolean edge_is_video;
-                        if (edges != null && edges.length() > 0) {
-
-                            for (int i = 0; i < edges.length(); i++) {
-
-                                JSONObject node = edges.getJSONObject(i).getJSONObject("node");
-
-                                edge_display_url = node.getString("display_url");
-                                edge_is_video = node.getBoolean("is_video");
-
-                                if (edge_is_video) {
-                                    edge_video_url = node.getString("video_url");
-                                }
-                                thumbnailUrls.add(edge_display_url);
-                                resourceUrls.add(edge_video_url);
-
-                            }
-                        } else if (edges1 != null && edges1.length() > 0) {
-
-                            for (int i = 0; i < edges1.length(); i++) {
-
-                                JSONObject node = edges1.getJSONObject(i).getJSONObject("node");
-
-                                edge_display_url = node.getString("display_url");
-                                edge_is_video = node.getBoolean("is_video");
-
-                                if (edge_is_video) {
-                                    edge_video_url = node.getString("video_url");
-                                }
-                                thumbnailUrls.add(edge_display_url);
-                                resourceUrls.add(edge_video_url);
-
-                            }
-
-                        } else {
-                            resourceUrls.add(video_url);
-                            thumbnailUrls.add(display_url);
-                        }
-
-
-                        postBean.setVideo(is_video);
-                        postBean.setDisplayUrl(display_url);
-                        postBean.setOwnerInfo(username);
-                        postBean.setId(shortcode_media.getString("id"));
-                        postBean.setLocation(null);
-                        postBean.setTakenAt(shortcode_media.getLong("taken_at_timestamp"));
-                        postBean.setShortCode(shortcode_media.getString("shortcode"));
-                        postBean.setDisplayResources(new ArrayList<>());
-                        postBean.setThumbnailSrc(shortcode_media.getString("thumbnail_src"));
-                        postBean.setCaption(caption);
-                        postBean.setLikeCount(shortcode_media.getJSONObject("edge_media_preview_like").getLong("count"));
-                        postBean.setCommentCount(shortcode_media.getJSONObject("edge_media_to_comment").getLong("count"));
-                        postBean.setUserLikedIt(shortcode_media.getBoolean("viewer_has_liked"));
-                        postBean.setUserSavedIt(shortcode_media.getBoolean("viewer_has_saved"));
-                        postBean.setDisplayResources(resourceUrls);
-
-                        listener.onReceive(postBean, response.body().toString());
-
-                    } catch (JSONException e) {
-                        listener.onFailure(InstaConfig.PARSE_ERROR_CODE, e.getMessage());
-                        e.printStackTrace();
+            public void onResponse(Call<PostNormalBean> call, Response<PostNormalBean> response) {
+                if (response.isSuccessful()) {
+                    PostNormalBean bean = response.body();
+                    if (response.body() != null) {
+                        listener.onReceive(bean, response.body().toString());
+                    } else {
+                        listener.onFailure(PARSE_ERROR_CODE, response.raw().toString());
                     }
                 } else {
-                    listener.onFailure(InstaConfig.SERVER_ERROR_CODE, response.body().toString());
+                    if (response.errorBody() != null) {
+                        listener.onFailure(SERVER_ERROR_CODE, response.errorBody().toString());
+                    } else {
+                        listener.onFailure(UNKNOWN_ERROR_CODE, "UNKNOWN ERROR");
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Object> call, Throwable t) {
-                listener.onFailure(InstaConfig.CONNECTION_ERROR_CODE, t.getMessage());
+            public void onFailure(Call<PostNormalBean> call, Throwable t) {
                 t.printStackTrace();
+                listener.onFailure(CONNECTION_ERROR_CODE, t.getMessage());
             }
         });
+
+
     }
 
 }
