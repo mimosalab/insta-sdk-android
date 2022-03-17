@@ -9,6 +9,7 @@
         <activity
             android:name=".auth.InstaAuthActivity"
             android:noHistory="true"
+            android:exported="false"
             android:theme="@style/InstaAuthTheme" />
     </application>
 </manifest>

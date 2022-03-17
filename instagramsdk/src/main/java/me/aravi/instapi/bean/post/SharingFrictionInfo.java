@@ -32,7 +32,7 @@ public class SharingFrictionInfo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(SharingFrictionInfo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(SharingFrictionInfo.class.getName()).append('@').append(Long.toHexString(System.identityHashCode(this))).append('[');
         sb.append("shouldHaveSharingFriction");
         sb.append('=');
         sb.append(((this.shouldHaveSharingFriction == null) ? "<null>" : this.shouldHaveSharingFriction));

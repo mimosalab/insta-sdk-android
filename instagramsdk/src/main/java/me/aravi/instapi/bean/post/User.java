@@ -4,11 +4,11 @@ package me.aravi.instapi.bean.post;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User__1 {
+public class User {
 
     @SerializedName("pk")
     @Expose
-    private Integer pk;
+    private long pk;
     @SerializedName("username")
     @Expose
     private String username;
@@ -26,13 +26,13 @@ public class User__1 {
     private String profilePicId;
     @SerializedName("friendship_status")
     @Expose
-    private FriendshipStatus__1 friendshipStatus;
+    private FriendshipStatus friendshipStatus;
     @SerializedName("is_verified")
     @Expose
     private Boolean isVerified;
     @SerializedName("follow_friction_type")
     @Expose
-    private Integer followFrictionType;
+    private long followFrictionType;
     @SerializedName("has_anonymous_profile_picture")
     @Expose
     private Boolean hasAnonymousProfilePicture;
@@ -44,7 +44,7 @@ public class User__1 {
     private Boolean isFavorite;
     @SerializedName("latest_reel_media")
     @Expose
-    private Integer latestReelMedia;
+    private long latestReelMedia;
     @SerializedName("has_highlight_reels")
     @Expose
     private Boolean hasHighlightReels;
@@ -55,11 +55,11 @@ public class User__1 {
     @Expose
     private Object liveBroadcastVisibility;
 
-    public Integer getPk() {
+    public long getPk() {
         return pk;
     }
 
-    public void setPk(Integer pk) {
+    public void setPk(long pk) {
         this.pk = pk;
     }
 
@@ -103,11 +103,11 @@ public class User__1 {
         this.profilePicId = profilePicId;
     }
 
-    public FriendshipStatus__1 getFriendshipStatus() {
+    public FriendshipStatus getFriendshipStatus() {
         return friendshipStatus;
     }
 
-    public void setFriendshipStatus(FriendshipStatus__1 friendshipStatus) {
+    public void setFriendshipStatus(FriendshipStatus friendshipStatus) {
         this.friendshipStatus = friendshipStatus;
     }
 
@@ -119,11 +119,11 @@ public class User__1 {
         this.isVerified = isVerified;
     }
 
-    public Integer getFollowFrictionType() {
+    public long getFollowFrictionType() {
         return followFrictionType;
     }
 
-    public void setFollowFrictionType(Integer followFrictionType) {
+    public void setFollowFrictionType(long followFrictionType) {
         this.followFrictionType = followFrictionType;
     }
 
@@ -151,11 +151,11 @@ public class User__1 {
         this.isFavorite = isFavorite;
     }
 
-    public Integer getLatestReelMedia() {
+    public long getLatestReelMedia() {
         return latestReelMedia;
     }
 
-    public void setLatestReelMedia(Integer latestReelMedia) {
+    public void setLatestReelMedia(long latestReelMedia) {
         this.latestReelMedia = latestReelMedia;
     }
 
@@ -186,10 +186,10 @@ public class User__1 {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(User__1 .class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(User.class.getName()).append('@').append(Long.toHexString(System.identityHashCode(this))).append('[');
         sb.append("pk");
         sb.append('=');
-        sb.append(((this.pk == null)?"<null>":this.pk));
+        sb.append((this.pk));
         sb.append(',');
         sb.append("username");
         sb.append('=');
@@ -221,7 +221,7 @@ public class User__1 {
         sb.append(',');
         sb.append("followFrictionType");
         sb.append('=');
-        sb.append(((this.followFrictionType == null)?"<null>":this.followFrictionType));
+        sb.append((this.followFrictionType));
         sb.append(',');
         sb.append("hasAnonymousProfilePicture");
         sb.append('=');
@@ -237,7 +237,7 @@ public class User__1 {
         sb.append(',');
         sb.append("latestReelMedia");
         sb.append('=');
-        sb.append(((this.latestReelMedia == null)?"<null>":this.latestReelMedia));
+        sb.append((this.latestReelMedia));
         sb.append(',');
         sb.append("hasHighlightReels");
         sb.append('=');

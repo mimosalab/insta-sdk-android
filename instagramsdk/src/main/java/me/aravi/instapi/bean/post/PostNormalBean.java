@@ -12,7 +12,7 @@ public class PostNormalBean {
     private List<Item> items = null;
     @SerializedName("num_results")
     @Expose
-    private Integer numResults;
+    private Long numResults;
     @SerializedName("more_available")
     @Expose
     private Boolean moreAvailable;
@@ -28,11 +28,11 @@ public class PostNormalBean {
         this.items = items;
     }
 
-    public Integer getNumResults() {
+    public Long getNumResults() {
         return numResults;
     }
 
-    public void setNumResults(Integer numResults) {
+    public void setNumResults(Long numResults) {
         this.numResults = numResults;
     }
 
@@ -55,7 +55,7 @@ public class PostNormalBean {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(PostNormalBean.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(PostNormalBean.class.getName()).append('@').append(Long.toHexString(System.identityHashCode(this))).append('[');
         sb.append("items");
         sb.append('=');
         sb.append(((this.items == null)?"<null>":this.items));

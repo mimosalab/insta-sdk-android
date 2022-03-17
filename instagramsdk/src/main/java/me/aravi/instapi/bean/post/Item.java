@@ -1,6 +1,8 @@
 
 package me.aravi.instapi.bean.post;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,7 +11,7 @@ public class Item {
 
     @SerializedName("taken_at")
     @Expose
-    private Integer takenAt;
+    private Long takenAt;
     @SerializedName("pk")
     @Expose
     private Long pk;
@@ -21,7 +23,7 @@ public class Item {
     private Long deviceTimestamp;
     @SerializedName("media_type")
     @Expose
-    private Integer mediaType;
+    private Long mediaType;
     @SerializedName("code")
     @Expose
     private String code;
@@ -30,7 +32,7 @@ public class Item {
     private String clientCacheKey;
     @SerializedName("filter_type")
     @Expose
-    private Integer filterType;
+    private Long filterType;
     @SerializedName("is_unified_video")
     @Expose
     private Boolean isUnifiedVideo;
@@ -72,7 +74,7 @@ public class Item {
     private Boolean hasMoreComments;
     @SerializedName("max_num_visible_preview_comments")
     @Expose
-    private Integer maxNumVisiblePreviewComments;
+    private Long maxNumVisiblePreviewComments;
     @SerializedName("preview_comments")
     @Expose
     private List<Object> previewComments = null;
@@ -84,25 +86,36 @@ public class Item {
     private Boolean canViewMorePreviewComments;
     @SerializedName("comment_count")
     @Expose
-    private Integer commentCount;
+    private Long commentCount;
     @SerializedName("hide_view_all_comment_entrypoint")
     @Expose
     private Boolean hideViewAllCommentEntrypoint;
     @SerializedName("inline_composer_display_condition")
     @Expose
     private String inlineComposerDisplayCondition;
+
+    @Nullable
     @SerializedName("image_versions2")
     @Expose
     private ImageVersions2 imageVersions2;
+
+    @SerializedName("carousel_media_count")
+    @Expose
+    private Long carouselMediaCount;
+
+    @SerializedName("carousel_media")
+    @Expose
+    private List<CarouselMedium> carouselMedia;
+
     @SerializedName("original_width")
     @Expose
-    private Integer originalWidth;
+    private Long originalWidth;
     @SerializedName("original_height")
     @Expose
-    private Integer originalHeight;
+    private Long originalHeight;
     @SerializedName("like_count")
     @Expose
-    private Integer likeCount;
+    private Long likeCount;
     @SerializedName("has_liked")
     @Expose
     private Boolean hasLiked;
@@ -144,7 +157,7 @@ public class Item {
     private Boolean profileGridControlEnabled;
     @SerializedName("deleted_reason")
     @Expose
-    private Integer deletedReason;
+    private Long deletedReason;
     @SerializedName("integrity_review_decision")
     @Expose
     private String integrityReviewDecision;
@@ -152,11 +165,11 @@ public class Item {
     @Expose
     private MusicMetadata musicMetadata;
 
-    public Integer getTakenAt() {
+    public Long getTakenAt() {
         return takenAt;
     }
 
-    public void setTakenAt(Integer takenAt) {
+    public void setTakenAt(Long takenAt) {
         this.takenAt = takenAt;
     }
 
@@ -184,11 +197,11 @@ public class Item {
         this.deviceTimestamp = deviceTimestamp;
     }
 
-    public Integer getMediaType() {
+    public Long getMediaType() {
         return mediaType;
     }
 
-    public void setMediaType(Integer mediaType) {
+    public void setMediaType(Long mediaType) {
         this.mediaType = mediaType;
     }
 
@@ -208,11 +221,11 @@ public class Item {
         this.clientCacheKey = clientCacheKey;
     }
 
-    public Integer getFilterType() {
+    public Long getFilterType() {
         return filterType;
     }
 
-    public void setFilterType(Integer filterType) {
+    public void setFilterType(Long filterType) {
         this.filterType = filterType;
     }
 
@@ -320,11 +333,11 @@ public class Item {
         this.hasMoreComments = hasMoreComments;
     }
 
-    public Integer getMaxNumVisiblePreviewComments() {
+    public Long getMaxNumVisiblePreviewComments() {
         return maxNumVisiblePreviewComments;
     }
 
-    public void setMaxNumVisiblePreviewComments(Integer maxNumVisiblePreviewComments) {
+    public void setMaxNumVisiblePreviewComments(Long maxNumVisiblePreviewComments) {
         this.maxNumVisiblePreviewComments = maxNumVisiblePreviewComments;
     }
 
@@ -352,11 +365,11 @@ public class Item {
         this.canViewMorePreviewComments = canViewMorePreviewComments;
     }
 
-    public Integer getCommentCount() {
+    public Long getCommentCount() {
         return commentCount;
     }
 
-    public void setCommentCount(Integer commentCount) {
+    public void setCommentCount(Long commentCount) {
         this.commentCount = commentCount;
     }
 
@@ -384,27 +397,27 @@ public class Item {
         this.imageVersions2 = imageVersions2;
     }
 
-    public Integer getOriginalWidth() {
+    public Long getOriginalWidth() {
         return originalWidth;
     }
 
-    public void setOriginalWidth(Integer originalWidth) {
+    public void setOriginalWidth(Long originalWidth) {
         this.originalWidth = originalWidth;
     }
 
-    public Integer getOriginalHeight() {
+    public Long getOriginalHeight() {
         return originalHeight;
     }
 
-    public void setOriginalHeight(Integer originalHeight) {
+    public void setOriginalHeight(Long originalHeight) {
         this.originalHeight = originalHeight;
     }
 
-    public Integer getLikeCount() {
+    public Long getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(Integer likeCount) {
+    public void setLikeCount(Long likeCount) {
         this.likeCount = likeCount;
     }
 
@@ -512,11 +525,11 @@ public class Item {
         this.profileGridControlEnabled = profileGridControlEnabled;
     }
 
-    public Integer getDeletedReason() {
+    public Long getDeletedReason() {
         return deletedReason;
     }
 
-    public void setDeletedReason(Integer deletedReason) {
+    public void setDeletedReason(Long deletedReason) {
         this.deletedReason = deletedReason;
     }
 
@@ -536,208 +549,75 @@ public class Item {
         this.musicMetadata = musicMetadata;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Item.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("takenAt");
-        sb.append('=');
-        sb.append(((this.takenAt == null)?"<null>":this.takenAt));
-        sb.append(',');
-        sb.append("pk");
-        sb.append('=');
-        sb.append(((this.pk == null)?"<null>":this.pk));
-        sb.append(',');
-        sb.append("id");
-        sb.append('=');
-        sb.append(((this.id == null)?"<null>":this.id));
-        sb.append(',');
-        sb.append("deviceTimestamp");
-        sb.append('=');
-        sb.append(((this.deviceTimestamp == null)?"<null>":this.deviceTimestamp));
-        sb.append(',');
-        sb.append("mediaType");
-        sb.append('=');
-        sb.append(((this.mediaType == null)?"<null>":this.mediaType));
-        sb.append(',');
-        sb.append("code");
-        sb.append('=');
-        sb.append(((this.code == null)?"<null>":this.code));
-        sb.append(',');
-        sb.append("clientCacheKey");
-        sb.append('=');
-        sb.append(((this.clientCacheKey == null)?"<null>":this.clientCacheKey));
-        sb.append(',');
-        sb.append("filterType");
-        sb.append('=');
-        sb.append(((this.filterType == null)?"<null>":this.filterType));
-        sb.append(',');
-        sb.append("isUnifiedVideo");
-        sb.append('=');
-        sb.append(((this.isUnifiedVideo == null)?"<null>":this.isUnifiedVideo));
-        sb.append(',');
-        sb.append("user");
-        sb.append('=');
-        sb.append(((this.user == null)?"<null>":this.user));
-        sb.append(',');
-        sb.append("canViewerReshare");
-        sb.append('=');
-        sb.append(((this.canViewerReshare == null)?"<null>":this.canViewerReshare));
-        sb.append(',');
-        sb.append("captionIsEdited");
-        sb.append('=');
-        sb.append(((this.captionIsEdited == null)?"<null>":this.captionIsEdited));
-        sb.append(',');
-        sb.append("likeAndViewCountsDisabled");
-        sb.append('=');
-        sb.append(((this.likeAndViewCountsDisabled == null)?"<null>":this.likeAndViewCountsDisabled));
-        sb.append(',');
-        sb.append("featuredProductsCta");
-        sb.append('=');
-        sb.append(((this.featuredProductsCta == null)?"<null>":this.featuredProductsCta));
-        sb.append(',');
-        sb.append("commercialityStatus");
-        sb.append('=');
-        sb.append(((this.commercialityStatus == null)?"<null>":this.commercialityStatus));
-        sb.append(',');
-        sb.append("isPaidPartnership");
-        sb.append('=');
-        sb.append(((this.isPaidPartnership == null)?"<null>":this.isPaidPartnership));
-        sb.append(',');
-        sb.append("isVisualReplyCommenterNoticeEnabled");
-        sb.append('=');
-        sb.append(((this.isVisualReplyCommenterNoticeEnabled == null)?"<null>":this.isVisualReplyCommenterNoticeEnabled));
-        sb.append(',');
-        sb.append("originalMediaHasVisualReplyMedia");
-        sb.append('=');
-        sb.append(((this.originalMediaHasVisualReplyMedia == null)?"<null>":this.originalMediaHasVisualReplyMedia));
-        sb.append(',');
-        sb.append("commentLikesEnabled");
-        sb.append('=');
-        sb.append(((this.commentLikesEnabled == null)?"<null>":this.commentLikesEnabled));
-        sb.append(',');
-        sb.append("commentThreadingEnabled");
-        sb.append('=');
-        sb.append(((this.commentThreadingEnabled == null)?"<null>":this.commentThreadingEnabled));
-        sb.append(',');
-        sb.append("hasMoreComments");
-        sb.append('=');
-        sb.append(((this.hasMoreComments == null)?"<null>":this.hasMoreComments));
-        sb.append(',');
-        sb.append("maxNumVisiblePreviewComments");
-        sb.append('=');
-        sb.append(((this.maxNumVisiblePreviewComments == null)?"<null>":this.maxNumVisiblePreviewComments));
-        sb.append(',');
-        sb.append("previewComments");
-        sb.append('=');
-        sb.append(((this.previewComments == null)?"<null>":this.previewComments));
-        sb.append(',');
-        sb.append("comments");
-        sb.append('=');
-        sb.append(((this.comments == null)?"<null>":this.comments));
-        sb.append(',');
-        sb.append("canViewMorePreviewComments");
-        sb.append('=');
-        sb.append(((this.canViewMorePreviewComments == null)?"<null>":this.canViewMorePreviewComments));
-        sb.append(',');
-        sb.append("commentCount");
-        sb.append('=');
-        sb.append(((this.commentCount == null)?"<null>":this.commentCount));
-        sb.append(',');
-        sb.append("hideViewAllCommentEntrypoint");
-        sb.append('=');
-        sb.append(((this.hideViewAllCommentEntrypoint == null)?"<null>":this.hideViewAllCommentEntrypoint));
-        sb.append(',');
-        sb.append("inlineComposerDisplayCondition");
-        sb.append('=');
-        sb.append(((this.inlineComposerDisplayCondition == null)?"<null>":this.inlineComposerDisplayCondition));
-        sb.append(',');
-        sb.append("imageVersions2");
-        sb.append('=');
-        sb.append(((this.imageVersions2 == null)?"<null>":this.imageVersions2));
-        sb.append(',');
-        sb.append("originalWidth");
-        sb.append('=');
-        sb.append(((this.originalWidth == null)?"<null>":this.originalWidth));
-        sb.append(',');
-        sb.append("originalHeight");
-        sb.append('=');
-        sb.append(((this.originalHeight == null)?"<null>":this.originalHeight));
-        sb.append(',');
-        sb.append("likeCount");
-        sb.append('=');
-        sb.append(((this.likeCount == null)?"<null>":this.likeCount));
-        sb.append(',');
-        sb.append("hasLiked");
-        sb.append('=');
-        sb.append(((this.hasLiked == null)?"<null>":this.hasLiked));
-        sb.append(',');
-        sb.append("topLikers");
-        sb.append('=');
-        sb.append(((this.topLikers == null)?"<null>":this.topLikers));
-        sb.append(',');
-        sb.append("facepileTopLikers");
-        sb.append('=');
-        sb.append(((this.facepileTopLikers == null)?"<null>":this.facepileTopLikers));
-        sb.append(',');
-        sb.append("photoOfYou");
-        sb.append('=');
-        sb.append(((this.photoOfYou == null)?"<null>":this.photoOfYou));
-        sb.append(',');
-        sb.append("canSeeInsightsAsBrand");
-        sb.append('=');
-        sb.append(((this.canSeeInsightsAsBrand == null)?"<null>":this.canSeeInsightsAsBrand));
-        sb.append(',');
-        sb.append("caption");
-        sb.append('=');
-        sb.append(((this.caption == null)?"<null>":this.caption));
-        sb.append(',');
-        sb.append("canViewerSave");
-        sb.append('=');
-        sb.append(((this.canViewerSave == null)?"<null>":this.canViewerSave));
-        sb.append(',');
-        sb.append("organicTrackingToken");
-        sb.append('=');
-        sb.append(((this.organicTrackingToken == null)?"<null>":this.organicTrackingToken));
-        sb.append(',');
-        sb.append("sharingFrictionInfo");
-        sb.append('=');
-        sb.append(((this.sharingFrictionInfo == null)?"<null>":this.sharingFrictionInfo));
-        sb.append(',');
-        sb.append("commentInformTreatment");
-        sb.append('=');
-        sb.append(((this.commentInformTreatment == null)?"<null>":this.commentInformTreatment));
-        sb.append(',');
-        sb.append("productType");
-        sb.append('=');
-        sb.append(((this.productType == null)?"<null>":this.productType));
-        sb.append(',');
-        sb.append("isInProfileGrid");
-        sb.append('=');
-        sb.append(((this.isInProfileGrid == null)?"<null>":this.isInProfileGrid));
-        sb.append(',');
-        sb.append("profileGridControlEnabled");
-        sb.append('=');
-        sb.append(((this.profileGridControlEnabled == null)?"<null>":this.profileGridControlEnabled));
-        sb.append(',');
-        sb.append("deletedReason");
-        sb.append('=');
-        sb.append(((this.deletedReason == null)?"<null>":this.deletedReason));
-        sb.append(',');
-        sb.append("integrityReviewDecision");
-        sb.append('=');
-        sb.append(((this.integrityReviewDecision == null)?"<null>":this.integrityReviewDecision));
-        sb.append(',');
-        sb.append("musicMetadata");
-        sb.append('=');
-        sb.append(((this.musicMetadata == null)?"<null>":this.musicMetadata));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
+    public Long getCarouselMediaCount() {
+        return carouselMediaCount;
     }
 
+    public void setCarouselMediaCount(Long carouselMediaCount) {
+        this.carouselMediaCount = carouselMediaCount;
+    }
+
+    public List<CarouselMedium> getCarouselMedia() {
+        return carouselMedia;
+    }
+
+    public void setCarouselMedia(List<CarouselMedium> carouselMedia) {
+        this.carouselMedia = carouselMedia;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "takenAt=" + takenAt +
+                ", pk=" + pk +
+                ", id='" + id + '\'' +
+                ", deviceTimestamp=" + deviceTimestamp +
+                ", mediaType=" + mediaType +
+                ", code='" + code + '\'' +
+                ", clientCacheKey='" + clientCacheKey + '\'' +
+                ", filterType=" + filterType +
+                ", isUnifiedVideo=" + isUnifiedVideo +
+                ", user=" + user +
+                ", canViewerReshare=" + canViewerReshare +
+                ", captionIsEdited=" + captionIsEdited +
+                ", likeAndViewCountsDisabled=" + likeAndViewCountsDisabled +
+                ", featuredProductsCta=" + featuredProductsCta +
+                ", commercialityStatus='" + commercialityStatus + '\'' +
+                ", isPaidPartnership=" + isPaidPartnership +
+                ", isVisualReplyCommenterNoticeEnabled=" + isVisualReplyCommenterNoticeEnabled +
+                ", originalMediaHasVisualReplyMedia=" + originalMediaHasVisualReplyMedia +
+                ", commentLikesEnabled=" + commentLikesEnabled +
+                ", commentThreadingEnabled=" + commentThreadingEnabled +
+                ", hasMoreComments=" + hasMoreComments +
+                ", maxNumVisiblePreviewComments=" + maxNumVisiblePreviewComments +
+                ", previewComments=" + previewComments +
+                ", comments=" + comments +
+                ", canViewMorePreviewComments=" + canViewMorePreviewComments +
+                ", commentCount=" + commentCount +
+                ", hideViewAllCommentEntrypoint=" + hideViewAllCommentEntrypoint +
+                ", inlineComposerDisplayCondition='" + inlineComposerDisplayCondition + '\'' +
+                ", imageVersions2=" + imageVersions2 +
+                ", carouselMediaCount=" + carouselMediaCount +
+                ", carouselMedia=" + carouselMedia +
+                ", originalWidth=" + originalWidth +
+                ", originalHeight=" + originalHeight +
+                ", likeCount=" + likeCount +
+                ", hasLiked=" + hasLiked +
+                ", topLikers=" + topLikers +
+                ", facepileTopLikers=" + facepileTopLikers +
+                ", photoOfYou=" + photoOfYou +
+                ", canSeeInsightsAsBrand=" + canSeeInsightsAsBrand +
+                ", caption=" + caption +
+                ", canViewerSave=" + canViewerSave +
+                ", organicTrackingToken='" + organicTrackingToken + '\'' +
+                ", sharingFrictionInfo=" + sharingFrictionInfo +
+                ", commentInformTreatment=" + commentInformTreatment +
+                ", productType='" + productType + '\'' +
+                ", isInProfileGrid=" + isInProfileGrid +
+                ", profileGridControlEnabled=" + profileGridControlEnabled +
+                ", deletedReason=" + deletedReason +
+                ", integrityReviewDecision='" + integrityReviewDecision + '\'' +
+                ", musicMetadata=" + musicMetadata +
+                '}';
+    }
 }

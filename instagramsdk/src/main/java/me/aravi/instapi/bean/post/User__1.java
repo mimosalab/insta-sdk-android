@@ -4,11 +4,11 @@ package me.aravi.instapi.bean.post;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User__1 {
 
     @SerializedName("pk")
     @Expose
-    private Integer pk;
+    private Long pk;
     @SerializedName("username")
     @Expose
     private String username;
@@ -26,13 +26,13 @@ public class User {
     private String profilePicId;
     @SerializedName("friendship_status")
     @Expose
-    private FriendshipStatus friendshipStatus;
+    private FriendshipStatus__1 friendshipStatus;
     @SerializedName("is_verified")
     @Expose
     private Boolean isVerified;
     @SerializedName("follow_friction_type")
     @Expose
-    private Integer followFrictionType;
+    private Long followFrictionType;
     @SerializedName("has_anonymous_profile_picture")
     @Expose
     private Boolean hasAnonymousProfilePicture;
@@ -44,7 +44,7 @@ public class User {
     private Boolean isFavorite;
     @SerializedName("latest_reel_media")
     @Expose
-    private Integer latestReelMedia;
+    private Long latestReelMedia;
     @SerializedName("has_highlight_reels")
     @Expose
     private Boolean hasHighlightReels;
@@ -55,11 +55,11 @@ public class User {
     @Expose
     private Object liveBroadcastVisibility;
 
-    public Integer getPk() {
+    public Long getPk() {
         return pk;
     }
 
-    public void setPk(Integer pk) {
+    public void setPk(Long pk) {
         this.pk = pk;
     }
 
@@ -103,11 +103,11 @@ public class User {
         this.profilePicId = profilePicId;
     }
 
-    public FriendshipStatus getFriendshipStatus() {
+    public FriendshipStatus__1 getFriendshipStatus() {
         return friendshipStatus;
     }
 
-    public void setFriendshipStatus(FriendshipStatus friendshipStatus) {
+    public void setFriendshipStatus(FriendshipStatus__1 friendshipStatus) {
         this.friendshipStatus = friendshipStatus;
     }
 
@@ -119,11 +119,11 @@ public class User {
         this.isVerified = isVerified;
     }
 
-    public Integer getFollowFrictionType() {
+    public Long getFollowFrictionType() {
         return followFrictionType;
     }
 
-    public void setFollowFrictionType(Integer followFrictionType) {
+    public void setFollowFrictionType(Long followFrictionType) {
         this.followFrictionType = followFrictionType;
     }
 
@@ -151,11 +151,11 @@ public class User {
         this.isFavorite = isFavorite;
     }
 
-    public Integer getLatestReelMedia() {
+    public Long getLatestReelMedia() {
         return latestReelMedia;
     }
 
-    public void setLatestReelMedia(Integer latestReelMedia) {
+    public void setLatestReelMedia(Long latestReelMedia) {
         this.latestReelMedia = latestReelMedia;
     }
 
@@ -186,7 +186,7 @@ public class User {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(User.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(User__1 .class.getName()).append('@').append(Long.toHexString(System.identityHashCode(this))).append('[');
         sb.append("pk");
         sb.append('=');
         sb.append(((this.pk == null)?"<null>":this.pk));

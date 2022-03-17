@@ -44,6 +44,8 @@ public class InstaAuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityInstaAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
     }
 
@@ -216,6 +218,13 @@ public class InstaAuthActivity extends AppCompatActivity {
                 .setNegativeButton("Resume", null)
                 .show();
 //        super.onBackPressed();
+    }
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
     @Override

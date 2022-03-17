@@ -11,19 +11,19 @@ public class Caption {
     private Long pk;
     @SerializedName("user_id")
     @Expose
-    private Integer userId;
+    private Long userId;
     @SerializedName("text")
     @Expose
     private String text;
     @SerializedName("type")
     @Expose
-    private Integer type;
+    private Long type;
     @SerializedName("created_at")
     @Expose
-    private Integer createdAt;
+    private Long createdAt;
     @SerializedName("created_at_utc")
     @Expose
-    private Integer createdAtUtc;
+    private Long createdAtUtc;
     @SerializedName("content_type")
     @Expose
     private String contentType;
@@ -32,7 +32,7 @@ public class Caption {
     private String status;
     @SerializedName("bit_flags")
     @Expose
-    private Integer bitFlags;
+    private Long bitFlags;
     @SerializedName("did_report_as_spam")
     @Expose
     private Boolean didReportAsSpam;
@@ -50,7 +50,7 @@ public class Caption {
     private Long mediaId;
     @SerializedName("private_reply_status")
     @Expose
-    private Integer privateReplyStatus;
+    private Long privateReplyStatus;
 
     public Long getPk() {
         return pk;
@@ -60,11 +60,11 @@ public class Caption {
         this.pk = pk;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -76,27 +76,27 @@ public class Caption {
         this.text = text;
     }
 
-    public Integer getType() {
+    public Long getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Long type) {
         this.type = type;
     }
 
-    public Integer getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Integer createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedAtUtc() {
+    public Long getCreatedAtUtc() {
         return createdAtUtc;
     }
 
-    public void setCreatedAtUtc(Integer createdAtUtc) {
+    public void setCreatedAtUtc(Long createdAtUtc) {
         this.createdAtUtc = createdAtUtc;
     }
 
@@ -116,11 +116,11 @@ public class Caption {
         this.status = status;
     }
 
-    public Integer getBitFlags() {
+    public Long getBitFlags() {
         return bitFlags;
     }
 
-    public void setBitFlags(Integer bitFlags) {
+    public void setBitFlags(Long bitFlags) {
         this.bitFlags = bitFlags;
     }
 
@@ -164,18 +164,18 @@ public class Caption {
         this.mediaId = mediaId;
     }
 
-    public Integer getPrivateReplyStatus() {
+    public Long getPrivateReplyStatus() {
         return privateReplyStatus;
     }
 
-    public void setPrivateReplyStatus(Integer privateReplyStatus) {
+    public void setPrivateReplyStatus(Long privateReplyStatus) {
         this.privateReplyStatus = privateReplyStatus;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Caption.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Caption.class.getName()).append('@').append(Long.toHexString(System.identityHashCode(this))).append('[');
         sb.append("pk");
         sb.append('=');
         sb.append(((this.pk == null)?"<null>":this.pk));
